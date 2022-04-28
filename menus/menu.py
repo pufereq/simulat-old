@@ -15,7 +15,7 @@ def main_menu():
 3. Exit
 9. debug
 """)
-    choice = IntPrompt.ask('Main Menu', choices=['1', '2', '3', '9'])
+    choice = IntPrompt.ask('main menu', choices=['1', '2', '3', '9'])
     if choice == 1:
         new_game(False)
     elif choice == 2:
