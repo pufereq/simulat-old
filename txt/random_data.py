@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-# get random names from text files
 import random as rn
 
 def random_last():
@@ -20,7 +19,6 @@ def random_first():
         male = male.read().splitlines()
     with open('txt/first_female.txt') as female:
         female = female.read().splitlines()
-
     return rn.choice(male + female)
 
 def random_gender():
@@ -32,3 +30,6 @@ def random_deplete():
 
 def random_money():
     return rn.randint(50,500)
+
+def random_fridge():
+    return rn.randint(0,10)
