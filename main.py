@@ -1,20 +1,18 @@
 #!/usr/bin/python3
 
 # imports
-from rich.console import Console
-from rich.prompt import Prompt
-import platform # for determining the OS
-
-# define console
-console = Console()
-
+from tracemalloc import start
+from rich import print
+from rich.prompt import IntPrompt
+# game libs imports
+from menus.menu import main_menu
 """
 The Simulat Game
 WIP
 """
-def menu():
-    # main menu
-    console.print("""
+
+def start_game():
+    print("""
 Welcome to...[bold green]
           _                    _         _   
          (_)                  | |       | |  
@@ -23,18 +21,8 @@ Welcome to...[bold green]
     \__ \| || | | | | || |_| || || (_| || |_ 
     |___/|_||_| |_| |_| \__,_||_| \__,_| \__|[/bold green]
           [italic]by pufereq [[bold]Work in Progress[/bold]][/italic]
-
-1. New Game
-2. Load Game [wip]
-3. Exit
 """)
-    choice = Prompt.ask('Main Menu', choices=['1', '2', '3'])
-    assert choice
-    if choice == 1:
-        raise Exception('Not miplememe') # create a new game
-    elif choice == 2:
-        pass # load a game
-    elif choice == 3:
-        pass # exit
+    main_menu()
+
 if __name__ == '__main__':
-    menu()
+    start_game()
