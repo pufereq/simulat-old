@@ -8,7 +8,7 @@ from rich.prompt import Prompt
 import os
 import random as rn
 
-from checks.os_check import clear, clear_dev
+from checks.os_check import clear
 from txt.random_data import random_first, random_gender, random_last, random_deplete, random_money
 
 class Character():

@@ -18,4 +18,4 @@ def clear_cmd():
     elif os_id == 2: return 'clear'
 
 def clear():
-    os.system(clear())
+    os.system(clear_cmd())
