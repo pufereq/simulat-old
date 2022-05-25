@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import platform
+import platform, os
 # os check
 
 os_id = 0
@@ -12,7 +12,10 @@ def __init__():
     else: os_id = 2
     return os_id
 
-def clear():
+def clear_cmd():
     if os_id == 0: return 'clear'
     elif os_id == 1: return 'cls'
     elif os_id == 2: return 'clear'
+
+def clear():
+    os.system(clear())
