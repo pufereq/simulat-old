@@ -9,11 +9,11 @@ def random_last():
 
 def random_first_male():
     with open('txt/first_male.txt') as male:
-        return rn.choice((last.read().splitlines()))
+        return rn.choice((male.read().splitlines()))
 
 def random_first_female():
     with open('txt/first_female.txt') as female:
-        return rn.choice((last.read().splitlines()))
+        return rn.choice((female.read().splitlines()))
 
 def random_first():
     with open('txt/first_male.txt') as male:
@@ -27,5 +27,8 @@ def random_gender():
     with open('txt/genders.txt') as genders:
         return rn.choice(genders.read().splitlines())
 
-def random_number():
+def random_deplete():
     return rn.randint(0,3)
+
+def random_money():
+    return rn.randint(50,500)
