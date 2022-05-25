@@ -14,7 +14,7 @@ WIP
 """
 
 def start_game():
-    os.system(clear())
+    clear()
     print('''
 Welcome to...[bold green]
           _                    _         _   
