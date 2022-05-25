@@ -1,17 +1,20 @@
 #!/usr/bin/python3
 
 # imports
-from tracemalloc import start
 from rich import print
 from rich.prompt import IntPrompt
+import os
 # game libs imports
 from menus.menu import main_menu
+from checks.os_check import clear
+
 """
 The Simulat Game
 WIP
 """
 
 def start_game():
+    os.system(clear())
     print("""
 Welcome to...[bold green]
           _                    _         _   
@@ -26,3 +29,5 @@ Welcome to...[bold green]
 
 if __name__ == '__main__':
     start_game()
+else:
+    raise ImportError('Main script cannot be used as a module.')
