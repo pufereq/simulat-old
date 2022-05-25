@@ -3,37 +3,29 @@
 # get random names from text files
 import random as rn
 
-female = ''
-male = ''
-last = ''
-first = ''
-gender = ''
-
 def random_last():
     with open('txt/last_uni.txt') as last:
-        last = rn.choice((last.read().splitlines()))
-    return last
+        return rn.choice((last.read().splitlines()))
 
 def random_first_male():
     with open('txt/first_male.txt') as male:
-        male = rn.choice((last.read().splitlines()))
-    return male
+        return rn.choice((last.read().splitlines()))
 
 def random_first_female():
     with open('txt/first_female.txt') as female:
-        female = rn.choice((last.read().splitlines()))
-    return female
+        return rn.choice((last.read().splitlines()))
 
 def random_first():
     with open('txt/first_male.txt') as male:
         male = male.read().splitlines()
-
     with open('txt/first_female.txt') as female:
         female = female.read().splitlines()
-    first = male + female
-    return rn.choice(first)
+
+    return rn.choice(male + female)
 
 def random_gender():
     with open('txt/genders.txt') as genders:
-        gender = rn.choice(genders.read().splitlines())
-    return gender
+        return rn.choice(genders.read().splitlines())
+
+def random_number():
+    return rn.randint(0,3)
