@@ -5,6 +5,8 @@ import os
 from rich import print
 from rich.prompt import IntPrompt
 
+from dialogs.game import new_game
+
 def main_menu():
     # main menu
     print("""
@@ -14,8 +16,8 @@ def main_menu():
 """)
     choice = IntPrompt.ask('Main Menu', choices=['1', '2', '3'])
     if choice == 1:
-        raise NotImplementedError('Not Implemented')
+        new_game()
     elif choice == 2:
-        pass # load a game
+        raise NotImplementedError('Not Implemented')
     elif choice == 3:
-        pass # exit
+        exit()
