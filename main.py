@@ -15,7 +15,7 @@ WIP
 
 def start_game():
     os.system(clear())
-    print("""
+    print('''
 Welcome to...[bold green]
           _                    _         _   
          (_)                  | |       | |  
@@ -24,7 +24,7 @@ Welcome to...[bold green]
     \__ \| || | | | | || |_| || || (_| || |_ 
     |___/|_||_| |_| |_| \__,_||_| \__,_| \__|[/bold green]
           [italic]by pufereq [[bold]Work in Progress[/bold]][/italic]
-""")
+''')
     main_menu()
 
 if __name__ == '__main__':
