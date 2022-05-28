@@ -14,6 +14,9 @@ WIP
 """
 
 def start_game():
+    '''
+    game logo
+    '''
     clear()
     print('''
 Welcome to...[bold green]

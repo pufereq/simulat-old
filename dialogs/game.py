@@ -5,14 +5,15 @@
 # imports
 from rich import print
 from rich.prompt import Prompt, Confirm
-import os
-import random as rn
 
 from checks.os_check import clear
 from txt.random_data import random_first, random_fridge, random_gender, random_last, random_deplete, random_money
 
 class Character():
     def __init__(self, first_name, last_name, gender, bio):
+        '''
+        initialize a Character object
+        '''
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
@@ -27,6 +28,9 @@ class Character():
         self.money = random_money()
 
     def deplete_needs(self):
+        '''
+        deplete needs using random_data.py
+        '''
         self.bladder -= random_deplete()
         self.hunger -= random_deplete()
         self.energy -= random_deplete()
@@ -36,6 +40,9 @@ class Character():
 
         self.check_needs()
     def check_needs(self):
+        '''
+        check if needs exceed limits and normalize them
+        '''
         if self.bladder < 0:
             self.bladder = 0
         elif self.bladder > 100:
@@ -68,6 +75,9 @@ class Character():
 
 class Fridge():
     def __init__(self, bread, vegetables, fruits, eggs, flour, meat):
+        '''
+        initialize a Fridge object
+        '''
         self.bread = bread
         self.vegetables = vegetables
         self.fruits = fruits
@@ -77,6 +87,9 @@ class Fridge():
 
 
 def new_game(debug):
+    '''
+    new game dialog
+    '''
     global main_character
     global fridge
     if debug:
@@ -97,6 +110,9 @@ def new_game(debug):
         panel()
 
 def fridge_contents():
+    '''
+    return fridge contents (to be merged into Fridge class)
+    '''
     return(f'''  [bold yellow]fridge contents:
     [magenta]bread:[/magenta] [bold italic blue]{fridge.bread}[/bold italic blue]
     [magenta]vegetables:[/magenta] [bold italic blue]{fridge.vegetables}[/bold italic blue]
@@ -107,6 +123,9 @@ def fridge_contents():
 
 
 def grocery_store():
+    '''
+    grocery store
+    '''
     print(f'''
 [bold green]simulat[/bold green]
   [red]grocery store[/red]
@@ -114,6 +133,9 @@ def grocery_store():
     ''')
 
 def see_fridge():
+    '''
+    print fridge contents / to be merged into
+    '''
     clear()
     print(f'''
 [bold green]simulat[/bold green]

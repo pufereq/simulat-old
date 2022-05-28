@@ -8,7 +8,10 @@ from rich.prompt import IntPrompt
 from dialogs.game import new_game
 
 def main_menu():
-    # main menu
+    '''
+    main menu
+    '''
+
     print("""
 1. New Game
 2. Load Game
