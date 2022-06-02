@@ -1,9 +1,20 @@
 #!/usr/bin/python3
 
 # imports
-from rich import print
-from rich.prompt import IntPrompt
 import os
+import time
+
+# check if rich is installed and install if not
+try:
+    from rich import print
+    from rich.prompt import IntPrompt
+except ImportError:
+    print('Rich is not installed.\nInstalling Rich')
+    time.sleep(1)
+    os.system('pip install rich')
+    print('\n\nRich is now installed. Extiting...')
+    exit()
+
 # game libs imports
 from menus.menu import main_menu
 from checks.os_check import clear
