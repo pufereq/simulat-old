@@ -43,5 +43,5 @@ Welcome to...[bold green]
 
 if __name__ == '__main__':
     start_game()
-else:
-    raise ImportError('Main script cannot be used as a module.')
+else: pass
+    # raise ImportError('Main script cannot be used as a module.')
