@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 # simulat menus
-import os
 from rich import print
 from rich.prompt import IntPrompt
 
