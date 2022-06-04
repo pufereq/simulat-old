@@ -7,6 +7,7 @@ from rich import print
 from rich.prompt import Prompt, Confirm
 
 from checks.os_check import clear
+
 from txt.random_data import random_first, random_fridge, random_gender, random_last, random_deplete, random_money
 
 class Character():
@@ -84,17 +85,56 @@ class Fridge():
         self.eggs = eggs
         self.flour = flour
         self.meat = meat
-
+    
+    def see_fridge(self):
+        '''
+        print fridge contents / to be merged into
+        '''
+        clear()
+        print(f'''
+    [bold green]simulat[/bold green]
+    {self.fridge_contents()}
+    [bold yellow]interactions:[/bold yellow]
+        [magenta]eat - eat contents[/magenta]
+        [magenta]back - go back to panel[/magenta]
+    ''')
+        choice = Prompt.ask('Fridge:', choices = ['eat', 'back'], default = 'back', show_choices = False)
+        if choice == 'eat':
+            print(f'''
+    [bold yellow]eat raw[/bold yellow]
+        [magenta]bread:[/magenta] [bold italic blue]+8 hunger; -1 fun[/bold italic blue]
+        [magenta]vegetables:[/magenta] [bold italic blue]+5 hunger; +2 fun[/bold italic blue]
+        [magenta]fruits:[/magenta] [bold italic blue]+7 hunger; +4 fun[/bold italic blue]
+        [magenta]eggs:[/magenta] [bold italic blue]+3 hunger; -2 fun[/bold italic blue]
+        [magenta]flour:[/magenta] [bold italic blue]+1 hunger; -10 fun; -5 hygiene[/bold italic blue]
+        [magenta]meat:[/magenta] [bold italic blue]+6 hunger; -4 fun[/bold italic blue]
+            ''')
+            choice = Prompt.ask('eat raw', choices = ['bread', 'vegetables', 'fruits', 'eggs', 'flour', 'meat', 'back'], show_choices = False, default = 'back')
+            if choice == 'bread':
+                pass
+        elif choice == 'back':
+            panel()
+    def fridge_contents(self):
+        '''
+        return fridge contents (to be merged into Fridge class)
+        '''
+        return(f'''  [bold yellow]fridge contents:
+        [magenta]bread:[/magenta] [bold italic blue]{home_fridge.bread}[/bold italic blue]
+        [magenta]vegetables:[/magenta] [bold italic blue]{home_fridge.vegetables}[/bold italic blue]
+        [magenta]fruits:[/magenta] [bold italic blue]{home_fridge.fruits}[/bold italic blue]
+        [magenta]eggs:[/magenta] [bold italic blue]{home_fridge.eggs}[/bold italic blue]
+        [magenta]flour:[/magenta] [bold italic blue]{home_fridge.flour}[/bold italic blue]
+        [magenta]meat:[/magenta] [bold italic blue]{home_fridge.meat}[/bold italic blue]''')
 
 def new_game(debug):
     '''
     new game dialog
     '''
     global main_character
-    global fridge
+    global home_fridge
     if debug:
         main_character = Character('DEBUG', 'DEBUG', 'DEBUG', 'DEBUG')
-        fridge = Fridge(10, 10, 10, 10, 10, 10)
+        home_fridge = Fridge(10, 10, 10, 10, 10, 10)
         panel()
     else: 
         clear()
@@ -106,68 +146,21 @@ def new_game(debug):
         if bio == 'None': bio = None
 
         main_character = Character(first_name, last_name, gender, bio)
-        fridge = Fridge(random_fridge(), random_fridge(), random_fridge(), random_fridge(), random_fridge(), random_fridge())
+        home_fridge = Fridge(random_fridge(), random_fridge(), random_fridge(),random_fridge(), random_fridge(), random_fridge())
         panel()
 
-def fridge_contents():
-    '''
-    return fridge contents (to be merged into Fridge class)
-    '''
-    return(f'''  [bold yellow]fridge contents:
-    [magenta]bread:[/magenta] [bold italic blue]{fridge.bread}[/bold italic blue]
-    [magenta]vegetables:[/magenta] [bold italic blue]{fridge.vegetables}[/bold italic blue]
-    [magenta]fruits:[/magenta] [bold italic blue]{fridge.fruits}[/bold italic blue]
-    [magenta]eggs:[/magenta] [bold italic blue]{fridge.eggs}[/bold italic blue]
-    [magenta]flour:[/magenta] [bold italic blue]{fridge.flour}[/bold italic blue]
-    [magenta]meat:[/magenta] [bold italic blue]{fridge.meat}[/bold italic blue]''')
-
-
-def grocery_store():
+def grocery_store(self):
     '''
     grocery store
     '''
     print(f'''
 [bold green]simulat[/bold green]
   [red]grocery store[/red]
-    {fridge_contents()}
+    {self.fridge_contents()}
     ''')
-
-def see_fridge():
-    '''
-    print fridge contents / to be merged into
-    '''
-    clear()
-    print(f'''
-[bold green]simulat[/bold green]
-{fridge_contents()}
-  [bold yellow]interactions:[/bold yellow]
-    [magenta]eat - eat contents[/magenta]
-    [magenta]back - go back to panel[/magenta]
-''')
-    choice = Prompt.ask('Fridge:', choices = ['eat', 'back'], default = 'back', show_choices = False)
-    if choice == 'eat':
-        print(f'''
-  [bold yellow]eat raw[/bold yellow]
-    [magenta]bread:[/magenta] [bold italic blue]+8 hunger; -1 fun[/bold italic blue]
-    [magenta]vegetables:[/magenta] [bold italic blue]+5 hunger; +2 fun[/bold italic blue]
-    [magenta]fruits:[/magenta] [bold italic blue]+7 hunger; +4 fun[/bold italic blue]
-    [magenta]eggs:[/magenta] [bold italic blue]+3 hunger; -2 fun[/bold italic blue]
-    [magenta]flour:[/magenta] [bold italic blue]+1 hunger; -10 fun; -5 hygiene[/bold italic blue]
-    [magenta]meat:[/magenta] [bold italic blue]+6 hunger; -4 fun[/bold italic blue]
-        ''')
-        choice = Prompt.ask('eat raw', choices = ['bread', 'vegetables', 'fruits', 'eggs', 'flour', 'meat', 'back'], show_choices = False, default = 'back')
-        if choice == 'bread':
-            pass
-        
-    elif choice == 'back':
-        panel()
 
 def panel():
     clear()
-    # print('[bold red]DEBUG[/bold red]')
-    # print(f'{main_character.first_name=}\n{main_character.last_name=}\n{main_character.gender=}\n{main_character.bio=}\n\n')
-
-    # print(f'[bold green]simulat[/bold green]\n[italic yellow]panel[/italic yellow]')
     print(f'''
 [bold green]simulat[/bold green]
   [red]panel:[/red]
@@ -193,16 +186,27 @@ def panel():
       [bold cyan]game:[/bold cyan]
         [magenta]exit - quit simulat[/magenta]
     ''')
-    choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'skip', 'exit'], default = 'skip', show_choices = False)
+    
+    choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'skip', 'menu', 'exit'], default = 'skip', show_choices = False)
     if choice == 'fridge':
         # raise NotImplementedError()
-        see_fridge()
+        home_fridge.see_fridge()
+
     elif choice == 'grocery':
         grocery_store()
+
     elif choice == 'skip':
         main_character.deplete_needs()
         panel()
+
+    elif choice == 'menu':
+        from main import start_game # import 
+
+        choice == Confirm.ask('are you sure?', default = False)
+        if choice: start_game()
+        else: panel()
+
     elif choice == 'exit':
-        choice = Confirm.ask('Are you sure?', default = False)
+        choice = Confirm.ask('are you sure?', default = False)
         if choice: exit()
         else: panel()
