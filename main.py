@@ -30,18 +30,17 @@ def start_game():
     '''
     clear()
     print('''
-Welcome to...[bold green]
+Welcome to...[b green]
           _                    _         _   
          (_)                  | |       | |  
      ___  _  _ __ ___   _   _ | |  __ _ | |_ 
     / __|| || '_ ` _ \ | | | || | / _` || __|
     \__ \| || | | | | || |_| || || (_| || |_ 
-    |___/|_||_| |_| |_| \__,_||_| \__,_| \__|[/bold green]
-          [italic]by pufereq [[bold]Work in Progress[/bold]][/italic]
+    |___/|_||_| |_| |_| \__,_||_| \__,_| \__|[/b green]
+          [i]by pufereq [[b]Work in Progress[/b]][/i]
+                [i]made with :heart: in :poland:[/i]
 ''')
     main_menu()
 
 if __name__ == '__main__':
     start_game()
-else: pass
-    # raise ImportError('Main script cannot be used as a module.')
