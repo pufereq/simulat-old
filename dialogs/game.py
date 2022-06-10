@@ -89,7 +89,7 @@ class Fridge():
         self.flour = flour
         self.meat = meat
     
-    def see_fridge(self):
+    def interact(self):
         '''
         print fridge contents
         '''
@@ -286,8 +286,7 @@ def panel():
     
     choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'skip', 'menu', 'exit'], default = 'skip', show_choices = False)
     if choice == 'fridge':
-        # raise NotImplementedError()
-        home_fridge.see_fridge()
+        home_fridge.interact()
 
     elif choice == 'grocery':
         grocery_store()
