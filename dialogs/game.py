@@ -150,7 +150,7 @@ class Fridge():
             main_character.fun -= 4
         elif choice == 'back':
             panel()
-        self.see_fridge()
+        self.interact()
 
     def fridge_contents(self):
         '''
@@ -277,7 +277,9 @@ def panel():
     [b yellow]interactions:[/b yellow]
       [b cyan]home:[/b cyan]
         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
-      [b cyan]buy:[/bold cyan]
+      [b cyan]money:[/b cyan]
+        [magenta]work[/magenta] - [white]go to work[/white]
+      [b cyan]buy:[/b cyan]
         [magenta]grocery[/magenta] - [white]grocery store[/white]
       [b cyan]game:[/b cyan]
         [magenta]menu[/magenta] - [white]quit to main menu[/white]
