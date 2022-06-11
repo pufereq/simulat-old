@@ -256,6 +256,12 @@ def grocery_store():
         home_fridge.add_to_fridge('meat', quantity)
     grocery_store()
 
+def work():
+    clear()
+    # print(f'''[b green]simulat[/b green''')
+    raise NotImplementedError()
+
+
 def panel():
     clear()
     print(f'''[b green]simulat[/b green]
@@ -292,6 +298,9 @@ def panel():
 
     elif choice == 'grocery':
         grocery_store()
+
+    elif choice == 'work':
+        work()
 
     elif choice == 'skip':
         main_character.deplete_needs()
