@@ -3,8 +3,16 @@
 import random as rn
 
 '''
-return random data
+return data
 '''
+
+def get_work_data(workplace):
+    if workplace == 'newspaper':
+        return {'pay': 15, 'time': 9}
+    elif workplace == 'pizza':
+        return {'pay': 20, 'time': 10}
+    elif workplace == 'office':
+        return {'pay': 40, 'time': 19}
 
 def random_last():
     with open('txt/last.txt') as last:
@@ -58,3 +66,8 @@ def random_fridge():
     randomize fridge contents when creating a new fridge object
     '''
     return rn.randint(0,10)
+def random_rob():
+    '''
+    randomize stolen money
+    '''
+    return {'money': rn.randint(0, 1000), 'got_caught': rn.choice([True, False]), 'rob_time': rn.randint(3, 14)}
