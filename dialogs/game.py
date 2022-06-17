@@ -3,12 +3,15 @@
 # game
 
 # imports
+import time
 from rich import print
+from rich.progress import track
 from rich.prompt import Prompt, IntPrompt, Confirm
 
 from checks.os_check import clear
 
-from txt.data import random_first, random_fridge, random_gender, random_last, random_deplete, random_money # import random data used in randomizing e.g money in new_game()
+from txt.data import random_first, random_fridge, random_gender, random_last, random_deplete, random_money
+from txt.data import get_work_data, random_rob
 
 class Character():
     def __init__(self, first_name, last_name, gender, bio):
@@ -150,7 +153,7 @@ class Fridge():
             main_character.fun -= 4
         elif choice == 'back':
             panel()
-        self.interact()
+        self.see_fridge()
 
     def fridge_contents(self):
         '''
@@ -181,6 +184,77 @@ class Fridge():
             self.meat += quantity
         print(f'[i yellow]added [b red]{quantity}[/b red] of [b red]{item}[/b red] to fridge[/i yellow]')
 
+class Work():
+    def __init__(self):
+        self.workplace = None
+
+    # def assign_workplace(self, workplace):
+    #     self.workplace = workplace
+    
+    def menu(self):
+        clear()
+        print(f'''[b green]simulat[/b green]
+    [red]work:[/red]
+        [b yellow]menu:[/b yellow]
+        [magenta]newspaper[/magenta] - [white]deliver newspapers ($15 / takes 9 seconds)[/white]
+        [magenta]pizza[/magenta] - [white]deliver pizzas ($20 / takes 10 seconds)[/white]
+        [magenta]office[/magenta] - [white]work at an office ($40 / takes 19 seconds)[/white]
+        [magenta]rob[/magenta] - [white]rob people (may earn up to $1000 (risky!))[/white]
+        ''')
+        choice = Prompt.ask('work', choices=['newspaper', 'pizza', 'office', 'rob', 'back'], default='back', show_choices=False)
+        if choice == 'back':
+            panel()
+        elif choice == 'rob':
+            self.rob()
+        else:
+            self.work(choice)
+
+    def work(self, workplace):
+        clear()
+        work_data = get_work_data(workplace)
+        work_time = work_data['time']
+        work_pay = work_data['pay']
+        try:
+            for i in track(range(work_time*100), description=f'[i yellow]working... ({workplace})'):
+                time.sleep(0.01)
+        except KeyboardInterrupt:
+            print('aborted')
+        main_character.money += work_pay
+        time.sleep(1)
+        self.menu()
+
+    def rob(self):
+        clear()
+        print(f'you have {main_character.money}')
+        rob_data = random_rob()
+        print(rob_data['rob_time'])
+        # try:
+        #     for i in track(range(rob_data['rob_time']*100), description=f'[i yellow]roaming the streets...'):
+        #         time.sleep(0.01)
+        # except KeyboardInterrupt:
+        #     print('aborted')
+
+        if rob_data['got_caught']:
+            if rob_data['money'] == 0:
+                print(f'[i yellow]you have lost all of your stolen money while running away from the police')
+                time.sleep(2)
+                self.menu()
+
+            print(f'[i yellow]police has caught you! you have to pay a [b red]${rob_data["money"]}[/b red] fine.')
+            main_character.money -= rob_data['money']
+            time.sleep(0.01)
+        else:
+            if rob_data['money'] == 0:
+                print(f'[i yellow]you have bumped into a stranger and lost your money')
+                time.sleep(2)
+                self.menu()
+
+            print(f'[i yellow]you have stolen [b red]${rob_data["money"]}[/b red]')
+            main_character.money += rob_data['money']
+            time.sleep(0.01)
+        self.rob()
+
+        
 
 
 def new_game(debug):
@@ -189,9 +263,11 @@ def new_game(debug):
     '''
     global main_character
     global home_fridge
+    global work
     if debug:
         main_character = Character('DEBUG', 'DEBUG', 'DEBUG', 'DEBUG')
         home_fridge = Fridge(10, 10, 10, 10, 10, 10)
+        work = Work()
         panel()
     else: 
         clear()
@@ -204,6 +280,7 @@ def new_game(debug):
 
         main_character = Character(first_name, last_name, gender, bio)
         home_fridge = Fridge(random_fridge(), random_fridge(), random_fridge(),random_fridge(), random_fridge(), random_fridge())
+        work = Work()
         panel()
 
 def grocery_store():
@@ -278,20 +355,23 @@ def panel():
       [b cyan]home:[/b cyan]
         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
       [b cyan]money:[/b cyan]
-        [magenta]work[/magenta] - [white]go to work[/white]
-      [b cyan]buy:[/b cyan]
+        [magenta]work[/magenta] - [white]get to work[/white]
+      [b cyan]buy:[/bold cyan]
         [magenta]grocery[/magenta] - [white]grocery store[/white]
       [b cyan]game:[/b cyan]
         [magenta]menu[/magenta] - [white]quit to main menu[/white]
         [magenta]exit[/magenta] - [white]quit simulat[/white]
     ''')
     
-    choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'skip', 'menu', 'exit'], default = 'skip', show_choices = False)
+    choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'work', 'skip', 'menu', 'exit'], default = 'skip', show_choices = False)
     if choice == 'fridge':
         home_fridge.interact()
 
     elif choice == 'grocery':
         grocery_store()
+
+    elif choice == 'work':
+        work.menu()
 
     elif choice == 'skip':
         main_character.deplete_needs()
