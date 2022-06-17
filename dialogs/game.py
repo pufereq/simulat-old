@@ -225,34 +225,32 @@ class Work():
 
     def rob(self):
         clear()
-        print(f'you have {main_character.money}')
         rob_data = random_rob()
-        print(rob_data['rob_time'])
-        # try:
-        #     for i in track(range(rob_data['rob_time']*100), description=f'[i yellow]roaming the streets...'):
-        #         time.sleep(0.01)
-        # except KeyboardInterrupt:
-        #     print('aborted')
+        try:
+            for i in track(range(rob_data['rob_time']*100), description=f'[i yellow]roaming the streets...'):
+                time.sleep(0.01)
+        except KeyboardInterrupt:
+            print('aborted')
 
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
                 print(f'[i yellow]you have lost all of your stolen money while running away from the police')
-                time.sleep(2)
+                time.sleep(1)
                 self.menu()
 
             print(f'[i yellow]police has caught you! you have to pay a [b red]${rob_data["money"]}[/b red] fine.')
             main_character.money -= rob_data['money']
-            time.sleep(0.01)
+            time.sleep(1)
         else:
             if rob_data['money'] == 0:
                 print(f'[i yellow]you have bumped into a stranger and lost your money')
-                time.sleep(2)
+                time.sleep(1)
                 self.menu()
 
             print(f'[i yellow]you have stolen [b red]${rob_data["money"]}[/b red]')
             main_character.money += rob_data['money']
-            time.sleep(0.01)
-        self.rob()
+            time.sleep(1)
+        self.menu()
 
         
 
