@@ -220,7 +220,8 @@ class Work():
         except KeyboardInterrupt:
             print('aborted')
         main_character.money += work_pay
-        time.sleep(1)
+        print(f'[i yellow]you now have {main_character.money}.')
+        time.sleep(2)
         self.menu()
 
     def rob(self):
@@ -235,21 +236,19 @@ class Work():
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
                 print(f'[i yellow]you have lost all of your stolen money while running away from the police')
-                time.sleep(1)
                 self.menu()
 
             print(f'[i yellow]police has caught you! you have to pay a [b red]${rob_data["money"]}[/b red] fine.')
             main_character.money -= rob_data['money']
-            time.sleep(1)
         else:
             if rob_data['money'] == 0:
                 print(f'[i yellow]you have bumped into a stranger and lost your money')
-                time.sleep(1)
                 self.menu()
 
             print(f'[i yellow]you have stolen [b red]${rob_data["money"]}[/b red]')
             main_character.money += rob_data['money']
-            time.sleep(1)
+        print(f'[i yellow]you now have ${main_character.money}.')
+        time.sleep(2)
         self.menu()
 
         
