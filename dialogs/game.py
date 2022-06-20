@@ -4,14 +4,16 @@
 
 # imports
 import time
+
 from rich import print
 from rich.progress import track
 from rich.prompt import Prompt, IntPrompt, Confirm
 
 from checks.os_check import clear
+from txt.data import (random_first, random_fridge, random_gender,
+                      random_last, random_deplete, random_money,
+                      get_work_data, random_rob)
 
-from txt.data import random_first, random_fridge, random_gender, random_last, random_deplete, random_money
-from txt.data import get_work_data, random_rob
 
 class Character():
     def __init__(self, first_name, last_name, gender, bio):
@@ -44,7 +46,7 @@ class Character():
         self.hygiene -= random_deplete()
 
         self.check_needs()
-        
+
     def check_needs(self):
         # used to prevent needs from getting negative or over 100%
         '''
@@ -80,6 +82,7 @@ class Character():
         elif self.social > 100:
             self.social = 100
 
+
 class Fridge():
     def __init__(self, bread, vegetables, fruits, eggs, flour, meat):
         '''
@@ -91,7 +94,7 @@ class Fridge():
         self.eggs = eggs
         self.flour = flour
         self.meat = meat
-    
+
     def interact(self):
         '''
         print fridge contents
@@ -104,14 +107,16 @@ class Fridge():
     [magenta]eat - eat contents[/magenta]
     [magenta]back - go back to panel[/magenta]
     ''')
-        choice = Prompt.ask('Fridge', choices = ['eat', 'back'], default = 'back', show_choices = False)
+        choice = Prompt.ask('Fridge',
+                            choices=['eat', 'back'],
+                            default='back',
+                            show_choices=False)
         if choice == 'eat':
             self.eat_from_fridge()
         elif choice == 'back':
             main_character.check_needs()
 
     def eat_from_fridge(self):
-        # player can eat stuff from the fridge raw
         '''
         eat contents from fridge
         '''
@@ -125,7 +130,18 @@ class Fridge():
       [magenta]flour:[/magenta] [bold italic blue]+1 hunger; -10 fun; -5 hygiene[/bold italic blue]
       [magenta]meat:[/magenta] [bold italic blue]+6 hunger; -4 fun[/bold italic blue]
         ''')
-        choice = Prompt.ask('eat raw', choices = ['bread', 'vegetables', 'fruits', 'eggs', 'flour', 'meat', 'back'], show_choices = False, default = 'back')
+        choice = Prompt.ask(
+            'eat raw',
+            choices=['bread',
+                     'vegetables',
+                     'fruits',
+                     'eggs',
+                     'flour',
+                     'meat',
+                     'back'],
+            show_choices=False,
+            default='back')
+
         if choice == 'bread':
             self.bread -= 1
             main_character.hunger += 8
@@ -184,13 +200,14 @@ class Fridge():
             self.meat += quantity
         print(f'[i yellow]added [b red]{quantity}[/b red] of [b red]{item}[/b red] to fridge[/i yellow]')
 
+
 class Work():
     def __init__(self):
         self.workplace = None
 
     # def assign_workplace(self, workplace):
     #     self.workplace = workplace
-    
+
     def menu(self):
         clear()
         print(f'''[b green]simulat[/b green]
@@ -201,7 +218,14 @@ class Work():
         [magenta]office[/magenta] - [white]work at an office ($40 / takes 19 seconds)[/white]
         [magenta]rob[/magenta] - [white]rob people (may earn up to $1000 (risky!))[/white]
         ''')
-        choice = Prompt.ask('work', choices=['newspaper', 'pizza', 'office', 'rob', 'back'], default='back', show_choices=False)
+        choice = Prompt.ask('work',
+                            choices=['newspaper',
+                                     'pizza',
+                                     'office',
+                                     'rob',
+                                     'back'],
+                            default='back',
+                            show_choices=False)
         if choice == 'back':
             panel()
         elif choice == 'rob':
@@ -215,7 +239,8 @@ class Work():
         work_time = work_data['time']
         work_pay = work_data['pay']
         try:
-            for i in track(range(work_time*100), description=f'[i yellow]working... ({workplace})'):
+            for i in track(range(work_time*100),
+                           description=f'[i yellow]working... ({workplace})'):
                 time.sleep(0.01)
         except KeyboardInterrupt:
             print('aborted')
@@ -228,7 +253,8 @@ class Work():
         clear()
         rob_data = random_rob()
         try:
-            for i in track(range(rob_data['rob_time']*100), description=f'[i yellow]roaming the streets...'):
+            for i in track(range(rob_data['rob_time']*100),
+                           description=f'[i yellow]roaming the streets...'):
                 time.sleep(0.01)
         except KeyboardInterrupt:
             print('aborted')
@@ -245,13 +271,11 @@ class Work():
                 print(f'[i yellow]you have bumped into a stranger and lost your money')
                 self.menu()
 
-            print(f'[i yellow]you have stolen [b red]${rob_data["money"]}[/b red]')
+            print(f'[i yellow]you have stolen [b red]${rob_data["money"]}')
             main_character.money += rob_data['money']
         print(f'[i yellow]you now have ${main_character.money}.')
         time.sleep(2)
         self.menu()
-
-        
 
 
 def new_game(debug):
@@ -266,19 +290,26 @@ def new_game(debug):
         home_fridge = Fridge(10, 10, 10, 10, 10, 10)
         work = Work()
         panel()
-    else: 
+    else:
         clear()
         print('[bold green]Create a new simulat[/bold green]')
-        first_name = Prompt.ask('[magenta]First name[/magenta]', default = random_first())
-        last_name = Prompt.ask('[magenta]Last name[/magenta]', default = random_last())
-        gender = Prompt.ask('[magenta]Gender[/magenta]', default = random_gender())
-        bio = Prompt.ask('[magenta]Biography[/magenta]', default = 'None')
-        if bio == 'None': bio = None
+        first_name = Prompt.ask('[magenta]First name[/magenta]',
+                                default=random_first())
+        last_name = Prompt.ask('[magenta]Last name[/magenta]',
+                               default=random_last())
+        gender = Prompt.ask('[magenta]Gender[/magenta]',
+                            default=random_gender())
+        bio = Prompt.ask('[magenta]Biography[/magenta]',
+                         default='None')
+        if bio == 'None':
+            bio = None
 
         main_character = Character(first_name, last_name, gender, bio)
-        home_fridge = Fridge(random_fridge(), random_fridge(), random_fridge(),random_fridge(), random_fridge(), random_fridge())
+        home_fridge = Fridge(random_fridge(), random_fridge(), random_fridge(),
+                             random_fridge(), random_fridge(), random_fridge())
         work = Work()
         panel()
+
 
 def grocery_store():
     '''
@@ -304,9 +335,18 @@ def grocery_store():
         [magenta]eggs[/magenta] - [white]buy eggs[/white]
         [magenta]flour[/magenta] - [white]buy flour[/white]
         [magenta]meat[/magenta] - [white]buy meat[/white]
-        
+
         [magenta]back[/magenta] - [white]back to panel[/white]''')
-    choice = Prompt.ask('grocery store', choices = ['bread', 'vegetables', 'fruits', 'eggs', 'flour', 'meat', 'back'], default = 'back', show_choices = False)
+    choice = Prompt.ask('grocery store',
+                        choices=['bread',
+                                 'vegetables',
+                                 'fruits',
+                                 'eggs',
+                                 'flour',
+                                 'meat',
+                                 'back'],
+                        default='back',
+                        show_choices=False)
     if choice == 'back':
         panel()
 
@@ -329,6 +369,7 @@ def grocery_store():
     elif choice == 'meat':
         home_fridge.add_to_fridge('meat', quantity)
     grocery_store()
+
 
 def panel():
     clear()
@@ -359,8 +400,16 @@ def panel():
         [magenta]menu[/magenta] - [white]quit to main menu[/white]
         [magenta]exit[/magenta] - [white]quit simulat[/white]
     ''')
-    
-    choice = Prompt.ask('[bold green]panel', choices = ['fridge', 'grocery', 'work', 'skip', 'menu', 'exit'], default = 'skip', show_choices = False)
+
+    choice = Prompt.ask('[bold green]panel',
+                        choices=['fridge',
+                                 'grocery',
+                                 'work',
+                                 'skip',
+                                 'menu',
+                                 'exit'],
+                        default='skip',
+                        show_choices=False)
     if choice == 'fridge':
         home_fridge.interact()
 
@@ -375,13 +424,17 @@ def panel():
         panel()
 
     elif choice == 'menu':
-        from main import start_game # import game start to exit to start menu
+        from main import start_game  # import game start to exit to start menu
 
-        choice == Confirm.ask('are you sure?', default = False)
-        if choice: start_game()
-        else: panel()
+        choice = Confirm.ask('are you sure?', default=False)
+        if choice:
+            start_game()
+        else:
+            panel()
 
     elif choice == 'exit':
-        choice = Confirm.ask('are you sure?', default = False)
-        if choice: exit()
-        else: panel()
+        choice = Confirm.ask('are you sure?', default=False)
+        if choice:
+            exit()
+        else:
+            panel()
