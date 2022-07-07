@@ -169,7 +169,7 @@ class Fridge():
             main_character.fun -= 4
         elif choice == 'back':
             panel()
-        self.see_fridge()
+        self.interact()
 
     def fridge_contents(self):
         '''
