@@ -9,7 +9,7 @@ def __init__():
     os = platform.system().lower()
     if os == 'linux': os_id = 0
     elif os == 'windows': os_id = 1
-    else: os_id = 2
+    else: raise NotImplementedError()
     return os_id
 
 def clear_cmd():
