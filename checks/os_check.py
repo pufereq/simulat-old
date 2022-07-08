@@ -22,6 +22,6 @@ def clear_cmd():
         return 'clear'
 
 def clear():
-    # temporary fix
-    __init__()
     os.system(clear_cmd())
+
+__init__()
