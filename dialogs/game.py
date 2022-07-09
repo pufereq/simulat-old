@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
+"""Main game.
 
+Returns:
+    None
+"""
 # game
 
 # imports
@@ -16,10 +20,17 @@ from txt.data import (random_first, random_fridge, random_gender,
 
 
 class Character():
+    """A character class used for main character."""
+
     def __init__(self, first_name, last_name, gender, bio):
-        '''
-        initialize a Character object
-        '''
+        """Initialize Character class.
+
+        Args:
+            first_name (str): First name
+            last_name (str): Last name
+            gender (_type_): Character gender
+            bio (_type_): Biography
+        """
         self.first_name = first_name
         self.last_name = last_name
         self.gender = gender
@@ -35,9 +46,7 @@ class Character():
         self.money = random_money()
 
     def deplete_needs(self):
-        '''
-        deplete needs using random_data.py
-        '''
+        """Lower needs by random value (0,3)."""
         self.bladder -= random_deplete()
         self.hunger -= random_deplete()
         self.energy -= random_deplete()
@@ -48,10 +57,7 @@ class Character():
         self.check_needs()
 
     def check_needs(self):
-        # used to prevent needs from getting negative or over 100%
-        '''
-        check if needs exceed limits and normalize them
-        '''
+        """Check if needs exceed values from 0 to 100 and cap them."""
         if self.bladder < 0:
             self.bladder = 0
         elif self.bladder > 100:
@@ -84,10 +90,21 @@ class Character():
 
 
 class Fridge():
-    def __init__(self, bread, vegetables, fruits, eggs, flour, meat):
-        '''
-        initialize a Fridge object
-        '''
+    """A Fridge class used to store food."""
+
+    def __init__(self, bread, vegetables, fruits, eggs, flour, meat,
+                 randomize=False):
+        """Initialize Fridge() class.
+
+        Args:
+            bread (int): Set amount of bread in Fridge().
+            vegetables (int): Set amount of vegetables in Fridge().
+            fruits (int): Set amount of fruits in Fridge().
+            eggs (int): Set amount of eggs in Fridge().
+            flour (int): Set amount of flour in Fridge().
+            meat (int): Set amount of meat in Fridge().
+            randomize (bool, optional): _description_. Defaults to False.
+        """
         self.bread = bread
         self.vegetables = vegetables
         self.fruits = fruits
@@ -96,9 +113,7 @@ class Fridge():
         self.meat = meat
 
     def interact(self):
-        '''
-        print fridge contents
-        '''
+        """Interact with Fridge. Allows to eat contents."""
         clear()
         print(f'''[bold green]simulat[/bold green]
   [b yellow]contents:[/b yellow]
@@ -117,9 +132,7 @@ class Fridge():
             main_character.check_needs()
 
     def eat_from_fridge(self):
-        '''
-        eat contents from fridge
-        '''
+        """Eat contents from Fridge to raise or decrease needs."""
         print(f'''[b green]simulat[/b green]
   [b yellow]fridge:[/b yellow]
     [bold cyan]eat raw:[/bold cyan]
@@ -172,9 +185,7 @@ class Fridge():
         self.interact()
 
     def fridge_contents(self):
-        '''
-        return fridge contents
-        '''
+        """Return fridge contents."""
         return(f'''[magenta]bread:[/magenta] [b i blue]{self.bread}[/b i blue]
     [magenta]vegetables:[/magenta] [b i blue]{self.vegetables}[/b i blue]
     [magenta]fruits:[/magenta] [b i blue]{self.fruits}[/b i blue]
@@ -183,9 +194,14 @@ class Fridge():
     [magenta]meat:[/magenta] [b i blue]{self.meat}[/b i blue]''')
 
     def add_to_fridge(self, item, quantity):
-        '''
-        add an item to fridge
-        '''
+        """Add items to the fridge.
+
+        If requested to add a non-exsistent item, raise an error.
+
+        Args:
+            item (str): _description_
+            quantity (int): _description_
+        """
         if item == 'bread':
             self.bread += quantity
         elif item == 'vegetables':
@@ -198,17 +214,20 @@ class Fridge():
             self.flour += quantity
         elif item == 'meat':
             self.meat += quantity
-        print(f'[i yellow]added [b red]{quantity}[/b red] of [b red]{item}[/b red] to fridge[/i yellow]')
+        else:
+            raise NameError(f'Item {item} not found.')
 
 
 class Work():
-    def __init__(self):
-        self.workplace = None
+    """A work class, can add or take money."""
 
-    # def assign_workplace(self, workplace):
-    #     self.workplace = workplace
+    def __init__(self):
+        """Initializates work, currently does nothing."""
+        # self.workplace = None
+        pass
 
     def menu(self):
+        """Work menu, can pick different jobs."""
         clear()
         print(f'''[b green]simulat[/b green]
     [red]work:[/red]
@@ -234,12 +253,17 @@ class Work():
             self.work(choice)
 
     def work(self, workplace):
+        """Use rich's track to 'visualize' work progress.
+
+        Args:
+            workplace (str): Used in defining work time and pay.
+        """
         clear()
         work_data = get_work_data(workplace)
         work_time = work_data['time']
         work_pay = work_data['pay']
         try:
-            for i in track(range(work_time*100),
+            for i in track(range(work_time * 100),
                            description=f'[i yellow]working... ({workplace})'):
                 time.sleep(0.01)
         except KeyboardInterrupt:
@@ -250,10 +274,11 @@ class Work():
         self.menu()
 
     def rob(self):
+        """Use rich's track to 'visualize' robbing progess."""
         clear()
         rob_data = random_rob()
         try:
-            for i in track(range(rob_data['rob_time']*100),
+            for i in track(range(rob_data['rob_time'] * 100),
                            description=f'[i yellow]roaming the streets...'):
                 time.sleep(0.01)
         except KeyboardInterrupt:
@@ -261,14 +286,14 @@ class Work():
 
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
-                print(f'[i yellow]you have lost all of your stolen money while running away from the police')
+                print('[i yellow]you have lost all of your stolen money while running away from the police')
                 self.menu()
 
             print(f'[i yellow]police has caught you! you have to pay a [b red]${rob_data["money"]}[/b red] fine.')
             main_character.money -= rob_data['money']
         else:
             if rob_data['money'] == 0:
-                print(f'[i yellow]you have bumped into a stranger and lost your money')
+                print('[i yellow]you have bumped into a stranger and lost your money')
                 self.menu()
 
             print(f'[i yellow]you have stolen [b red]${rob_data["money"]}')
@@ -278,10 +303,16 @@ class Work():
         self.menu()
 
 
-def new_game(debug):
-    '''
-    new game dialog
-    '''
+def new_game(debug=False):
+    """Start a new game.
+
+    User can choose character details.
+    Initializes Character, Fridge and Work classes.
+
+    Args:
+        debug (bool, optional): Quick start,
+        sets every detail to 'DEBUG'. Defaults to False.
+    """
     global main_character
     global home_fridge
     global work
@@ -312,9 +343,7 @@ def new_game(debug):
 
 
 def grocery_store():
-    '''
-    grocery store
-    '''
+    """Buy foodstuffs."""
     clear()
     print(f'''[b green]simulat[/b green]
   [red]grocery store:[/red]
@@ -372,6 +401,10 @@ def grocery_store():
 
 
 def panel():
+    """Game panel.
+
+    Shows data, allows to interact with game.
+    """
     clear()
     print(f'''[b green]simulat[/b green]
   [red]panel:[/red]

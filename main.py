@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+"""simulat start."""
+
 # imports
 import os
 import time
@@ -17,16 +19,13 @@ except ImportError:
 # game libs imports
 from menus.menu import main_menu
 from checks.os_check import clear
-"""
-The Simulat Game
-WIP
-"""
 
 
 def start_game():
-    '''
-    game logo
-    '''
+    """Start simulat.
+
+    Display logo, redirect to menu.
+    """
     clear()
     print('''
 Welcome to...[b green]
