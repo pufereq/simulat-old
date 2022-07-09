@@ -28,8 +28,8 @@ class Character():
         Args:
             first_name (str): First name
             last_name (str): Last name
-            gender (_type_): Character gender
-            bio (_type_): Biography
+            gender (str): Character gender
+            bio (str): Biography
         """
         self.first_name = first_name
         self.last_name = last_name
