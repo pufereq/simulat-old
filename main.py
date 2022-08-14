@@ -17,8 +17,8 @@ except ImportError:
     exit()
 
 # game libs imports
-from menus.menu import main_menu
-from checks.os_check import clear
+from data.menu import main_menu
+from data.clear import clear
 
 
 def start_game():

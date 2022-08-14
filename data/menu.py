@@ -4,7 +4,7 @@
 from rich import print
 from rich.prompt import IntPrompt
 
-from dialogs.game import new_game
+from data.game import new_game
 
 
 def main_menu():
