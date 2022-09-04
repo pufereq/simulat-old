@@ -1,6 +1,6 @@
 """Character class."""
 
-from data.txt.random_data import random_deplete, random_money
+from data.random.random_data import random_deplete, random_money
 
 
 class Character():
@@ -69,7 +69,7 @@ class Character():
             self.social = 100
 
         if self.hygiene < 0:
-            self.social = 0
-        elif self.social > 100:
-            self.social = 100
+            self.hygiene = 0
+        elif self.hygiene > 100:
+            self.hygiene = 100
         panel()
