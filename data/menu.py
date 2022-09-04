@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 
+"""simulat menus.
+
+Raises:
+    NotImplementedError: If load game chosen.
+"""
+
 # simulat menus
 from rich import print
 from rich.prompt import IntPrompt
