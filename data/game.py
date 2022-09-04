@@ -17,8 +17,8 @@ from data.classes.Fridge.fridge import Fridge
 from data.classes.Work.work import Work
 
 from data.clear import clear
-from data.txt.random_data import (random_first, random_fridge, random_gender,
-                                  random_last, get_work_data, random_rob)
+from data.random.get_names import random_first, random_gender, random_last
+from data.random.random_data import random_fridge
 
 
 def new_game(debug=False):
