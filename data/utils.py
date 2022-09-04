@@ -4,17 +4,17 @@
 from rich import print
 
 
-def cap(value, min_value, max_value, throw_error=False):
+def cap(value: int, min_value: int, max_value: int, throw_error=False) -> int:
     """Caps a number between miv_value and max_value.
 
     Args:
-        value (_type_): _description_
-        min_value (_type_): _description_
-        max_value (_type_): _description_
+        value (int): Number to cap.
+        min_value (int): Low value to cap to.
+        max_value (int): High value to cap to.
         throw_error (bool, optional): _description_. Defaults to False.
 
     Returns:
-        _type_: _description_
+        int: Capped value
     """
     if value < min_value:
         if throw_error:
@@ -25,7 +25,3 @@ def cap(value, min_value, max_value, throw_error=False):
             print('[red]value too large')
         value = max_value
     return value
-
-
-test = cap(test, 0, 10)
-print(f'{test=}')
