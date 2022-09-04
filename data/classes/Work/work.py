@@ -9,7 +9,7 @@ from rich import print
 
 from data.clear import clear
 # from dialogs.game import panel, main_character
-from data.txt.random_data import get_work_data, random_rob
+from data.random.random_data import get_work_data, random_rob
 
 
 class Work():
