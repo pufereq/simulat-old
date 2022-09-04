@@ -95,7 +95,6 @@ class Fridge():
             main_character.hunger += 6
             main_character.fun -= 4
         elif choice == 'back':
-            print('fg')
             panel()
         self.interact()
 
@@ -114,8 +113,8 @@ class Fridge():
         If requested to add a non-exsistent item, raise an error.
 
         Args:
-            item (str): _description_
-            quantity (int): _description_
+            item (str): item name
+            quantity (int): quantity to add
         """
         if item == 'bread':
             self.bread += quantity
