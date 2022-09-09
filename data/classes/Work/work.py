@@ -24,14 +24,14 @@ class Work():
         """Work menu, can pick different jobs."""
         from data.game import panel
         clear()
-        print(f'''[b green]simulat[/b green]
+        print(f"""[b green]simulat[/b green]
     [red]work:[/red]
         [b yellow]menu:[/b yellow]
         [magenta]newspaper[/magenta] - [white]deliver newspapers ($15 / takes 9 seconds)[/white]
         [magenta]pizza[/magenta] - [white]deliver pizzas ($20 / takes 10 seconds)[/white]
         [magenta]office[/magenta] - [white]work at an office ($40 / takes 19 seconds)[/white]
         [magenta]rob[/magenta] - [white]rob people (may earn up to $1000 (risky!))[/white]
-        ''')
+        """)
         choice = Prompt.ask('work',
                             choices=['newspaper', 'pizza', 'office',
                                      'rob', 'back'],
@@ -57,12 +57,12 @@ class Work():
         work_pay = work_data['pay']
         try:
             for i in track(range(work_time * 100),
-                           description=f'[i yellow]working... ({workplace})'):
+                           description=f"[i yellow]working... ({workplace})"):
                 time.sleep(0.01)
         except KeyboardInterrupt:
-            print('aborted')
+            print("aborted")
         main_character.money += work_pay
-        print(f'[i yellow]you now have {main_character.money}.')
+        print(f"[i yellow]you now have {main_character.money}.")
         time.sleep(2)
         self.menu()
 
@@ -73,25 +73,25 @@ class Work():
         rob_data = random_rob()
         try:
             for i in track(range(rob_data['rob_time'] * 100),
-                           description=f'[i yellow]roaming the streets...'):
+                           description=f"[i yellow]roaming the streets..."):
                 time.sleep(0.01)
         except KeyboardInterrupt:
-            print('aborted')
+            print("aborted")
 
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
-                print('[i yellow]you have lost all of your stolen money while running away from the police')
+                print("[i yellow]you have lost all of your stolen money while running away from the police")
                 self.menu()
 
-            print(f'[i yellow]police has caught you! you have to pay a [b red]${rob_data["money"]}[/b red] fine.')
+            print(f"[i yellow]police has caught you! you have to pay a [b red]${rob_data['money']}[/b red] fine.")
             main_character.money -= rob_data['money']
         else:
             if rob_data['money'] == 0:
-                print('[i yellow]you have bumped into a stranger and lost your money')
+                print("[i yellow]you have bumped into a stranger and lost your money")
                 self.menu()
 
-            print(f'[i yellow]you have stolen [b red]${rob_data["money"]}')
+            print(f"[i yellow]you have stolen [b red]${rob_data['money']}")
             main_character.money += rob_data['money']
-        print(f'[i yellow]you now have ${main_character.money}.')
+        print(f"[i yellow]you now have ${main_character.money}.")
         time.sleep(2)
         self.menu()

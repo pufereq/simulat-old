@@ -41,14 +41,14 @@ def new_game(debug=False):
         panel()
     else:
         clear()
-        print('[bold green]Create a new simulat[/bold green]')
-        first_name = Prompt.ask('[magenta]First name[/magenta]',
+        print("[bold green]Create a new simulat[/bold green]")
+        first_name = Prompt.ask("[magenta]First name[/magenta]",
                                 default=random_first())
-        last_name = Prompt.ask('[magenta]Last name[/magenta]',
+        last_name = Prompt.ask("[magenta]Last name[/magenta]",
                                default=random_last())
-        gender = Prompt.ask('[magenta]Gender[/magenta]',
+        gender = Prompt.ask("[magenta]Gender[/magenta]",
                             default=random_gender())
-        bio = Prompt.ask('[magenta]Biography[/magenta]',
+        bio = Prompt.ask("[magenta]Biography[/magenta]",
                          default='None')
         if bio == 'None':
             bio = None
@@ -63,7 +63,7 @@ def new_game(debug=False):
 def grocery_store():
     """Buy foodstuffs."""
     clear()
-    print(f'''[b green]simulat[/b green]
+    print(f"""[b green]simulat[/b green]
   [red]grocery store:[/red]
    [b yellow]fridge contents:[/b yellow]
       {home_fridge.fridge_contents()}
@@ -83,7 +83,7 @@ def grocery_store():
         [magenta]flour[/magenta] - [white]buy flour[/white]
         [magenta]meat[/magenta] - [white]buy meat[/white]
 
-        [magenta]back[/magenta] - [white]back to panel[/white]''')
+        [magenta]back[/magenta] - [white]back to panel[/white]""")
     choice = Prompt.ask('grocery store',
                         choices=['bread', 'vegetables', 'fruits',
                                  'eggs', 'flour', 'meat', 'back'],
@@ -119,7 +119,7 @@ def panel():
     Shows data, allows to interact with game.
     """
     clear()
-    print(f'''[b green]simulat[/b green]
+    print(f"""[b green]simulat[/b green]
   [red]panel:[/red]
     [b yellow]data:[/b yellow]
       [magenta]first name:[/magenta] [b i blue]{main_character.first_name}[/b i blue]
@@ -145,7 +145,7 @@ def panel():
       [b cyan]game:[/b cyan]
         [magenta]menu[/magenta] - [white]quit to main menu[/white]
         [magenta]exit[/magenta] - [white]quit simulat[/white]
-    ''')
+    """)
 
     choice = Prompt.ask('[bold green]panel',
                         choices=['fridge', 'grocery', 'work',
@@ -168,14 +168,14 @@ def panel():
     elif choice == 'menu':
         from main import start_game  # import game start to exit to start menu
 
-        choice = Confirm.ask('are you sure?', default=False)
+        choice = Confirm.ask("are you sure?", default=False)
         if choice:
             start_game()
         else:
             panel()
 
     elif choice == 'exit':
-        choice = Confirm.ask('are you sure?', default=False)
+        choice = Confirm.ask("are you sure?", default=False)
         if choice:
             exit()
         else:

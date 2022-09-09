@@ -33,13 +33,13 @@ class Fridge():
         """Interact with Fridge. Allows to eat contents."""
         from data.game import main_character
         clear()
-        print(f'''[bold green]simulat[/bold green]
+        print(f"""[bold green]simulat[/bold green]
   [b yellow]contents:[/b yellow]
     {self.fridge_contents()}
   [bold yellow]interactions:[/bold yellow]
     [magenta]eat - eat contents[/magenta]
     [magenta]back - go back to panel[/magenta]
-    ''')
+    """)
         choice = Prompt.ask('Fridge',
                             choices=['eat', 'back'],
                             default='back',
@@ -52,7 +52,7 @@ class Fridge():
     def eat_from_fridge(self):
         """Eat contents from Fridge to raise or decrease needs."""
         from data.game import panel, main_character
-        print(f'''[b green]simulat[/b green]
+        print(f"""[b green]simulat[/b green]
   [b yellow]fridge:[/b yellow]
     [bold cyan]eat raw:[/bold cyan]
       [magenta]bread:[/magenta] [bold italic blue]+8 hunger; -1 fun[/bold italic blue]
@@ -61,9 +61,9 @@ class Fridge():
       [magenta]eggs:[/magenta] [bold italic blue]+3 hunger; -2 fun[/bold italic blue]
       [magenta]flour:[/magenta] [bold italic blue]+1 hunger; -10 fun; -5 hygiene[/bold italic blue]
       [magenta]meat:[/magenta] [bold italic blue]+6 hunger; -4 fun[/bold italic blue]
-        ''')
+        """)
         choice = Prompt.ask(
-            'eat raw',
+            "eat raw",
             choices=['bread', 'vegetables', 'fruits',
                      'eggs', 'flour', 'meat', 'back'],
             show_choices=False,
@@ -100,12 +100,12 @@ class Fridge():
 
     def fridge_contents(self):
         """Return fridge contents."""
-        return (f'''[magenta]bread:[/magenta] [b i blue]{self.bread}[/b i blue]
+        return (f"""[magenta]bread:[/magenta] [b i blue]{self.bread}[/b i blue]
     [magenta]vegetables:[/magenta] [b i blue]{self.vegetables}[/b i blue]
     [magenta]fruits:[/magenta] [b i blue]{self.fruits}[/b i blue]
     [magenta]eggs:[/magenta] [b i blue]{self.eggs}[/b i blue]
     [magenta]flour:[/magenta] [b i blue]{self.flour}[/b i blue]
-    [magenta]meat:[/magenta] [b i blue]{self.meat}[/b i blue]''')
+    [magenta]meat:[/magenta] [b i blue]{self.meat}[/b i blue]""")
 
     def add_to_fridge(self, item, quantity):
         """Add items to the fridge.
@@ -129,4 +129,4 @@ class Fridge():
         elif item == 'meat':
             self.meat += quantity
         else:
-            raise NameError(f'Item {item} not found.')
+            raise NameError(f"Item {item} not found.")

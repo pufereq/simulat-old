@@ -21,11 +21,11 @@ def main_menu():
 3. Exit
 9. debug
 """)
-    choice = IntPrompt.ask('main menu', choices=['1', '2', '3', '9'])
+    choice = IntPrompt.ask("main menu", choices=["1", "2", "3", "9"])
     if choice == 1:
         new_game()
     elif choice == 2:
-        raise NotImplementedError('Not Implemented')
+        raise NotImplementedError("Not Implemented")
     elif choice == 3:
         exit()
     elif choice == 9:

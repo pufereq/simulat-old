@@ -18,10 +18,10 @@ def cap(value: int, min_value: int, max_value: int, throw_error=False) -> int:
     """
     if value < min_value:
         if throw_error:
-            print('[red]value too small')
+            print("[red]value too small")
         value = min_value
     elif value > max_value:
         if throw_error:
-            print('[red]value too large')
+            print("[red]value too large")
         value = max_value
     return value
