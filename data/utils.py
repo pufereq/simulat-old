@@ -3,6 +3,8 @@
 
 from rich import print
 
+from clear import clear
+
 
 def cap(value: int, min_value: int, max_value: int, throw_error=False) -> int:
     """Caps a number between miv_value and max_value.
@@ -25,3 +27,16 @@ def cap(value: int, min_value: int, max_value: int, throw_error=False) -> int:
             print("[red]value too large")
         value = max_value
     return value
+
+
+def print_header(second_level_name: str, third_level_name: str, interaction_list: list, clear_screen=True) -> str:
+    if clear_screen:
+        clear()
+    print(f"""[b green]simulat[/b green]
+  [b yellow]{second_level_name}[/b yellow]
+    [b cyan]{third_level_name}[/b cyan]""")
+    for dict in interaction_list:
+        print(f"      [magenta]{dict['name']}[/magenta] - {dict['desc']}")
+
+
+# example: print_header('garden', 'interactions', [{'name': 'foo', 'desc': 'bar'}, {'name': 'test', 'desc': 'test'}])
