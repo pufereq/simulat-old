@@ -15,7 +15,7 @@ from rich.prompt import Prompt, IntPrompt, Confirm
 from data.classes.Character.character import Character
 from data.classes.Fridge.fridge import Fridge
 from data.classes.Work.work import Work
-# from data.classes.rooms.Bathroom.bathroom import Bathroom
+from data.classes.rooms.Bathroom.bathroom import Bathroom
 
 from data.clear import clear
 from data.random.get_names import random_first, random_gender, random_last
@@ -139,6 +139,7 @@ def panel():
     [b yellow]interactions:[/b yellow]
       [b cyan]home:[/b cyan]
         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
+        [magenta]bathroom[/magenta] - [white]go to the bathroom[/white]
       [b cyan]money:[/b cyan]
         [magenta]work[/magenta] - [white]get to work[/white]
       [b cyan]buy:[/bold cyan]
