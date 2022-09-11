@@ -15,6 +15,7 @@ from rich.prompt import Prompt, IntPrompt, Confirm
 from data.classes.Character.character import Character
 from data.classes.Fridge.fridge import Fridge
 from data.classes.Work.work import Work
+from data.classes.rooms.Bathroom.bathroom import Bathroom
 
 from data.clear import clear
 from data.random.get_names import random_first, random_gender, random_last
@@ -34,11 +35,10 @@ def new_game(debug=False):
     global main_character
     global home_fridge
     global work
+    global bathroom
     if debug:
         main_character = Character('DEBUG', 'DEBUG', 'DEBUG', 'DEBUG')
         home_fridge = Fridge(10, 10, 10, 10, 10, 10)
-        work = Work()
-        panel()
     else:
         clear()
         print("[bold green]Create a new simulat[/bold green]")
@@ -56,8 +56,9 @@ def new_game(debug=False):
         main_character = Character(first_name, last_name, gender, bio)
         home_fridge = Fridge(random_fridge(), random_fridge(), random_fridge(),
                              random_fridge(), random_fridge(), random_fridge())
-        work = Work()
-        panel()
+    bathroom = Bathroom()
+    work = Work()
+    panel()
 
 
 def grocery_store():
@@ -138,6 +139,7 @@ def panel():
     [b yellow]interactions:[/b yellow]
       [b cyan]home:[/b cyan]
         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
+        [magenta]bathroom[/magenta] - [white]go to the bathroom[/white]
       [b cyan]money:[/b cyan]
         [magenta]work[/magenta] - [white]get to work[/white]
       [b cyan]buy:[/bold cyan]
@@ -148,7 +150,7 @@ def panel():
     """)
 
     choice = Prompt.ask('[bold green]panel',
-                        choices=['fridge', 'grocery', 'work',
+                        choices=['fridge', 'grocery', 'work', 'bathroom',
                                  'skip', 'menu', 'exit'],
                         default='skip',
                         show_choices=False)
@@ -160,6 +162,9 @@ def panel():
 
     elif choice == 'work':
         work.menu()
+
+    elif choice == 'bathroom':
+        bathroom.room()
 
     elif choice == 'skip':
         main_character.deplete_needs()
