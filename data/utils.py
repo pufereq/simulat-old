@@ -61,8 +61,10 @@ def change_value(value: int, change: int, set: bool = False,
         return value
 
 
-def print_header(second_level_name: str, third_level_name: str,
-                 fourth_level_name: str, interaction_list: list,
+def print_header(second_level_name: str, second_level_contents: list,
+                 third_level_name: str, third_level_contents: list,
+                 fourth_level_name: str, fourth_level_contents: list,
+                 interaction_list: list,
                  clear_screen=False, use_prompt=True, go_back=None) -> str:
     """Print header for menus.
 
@@ -70,8 +72,11 @@ def print_header(second_level_name: str, third_level_name: str,
 
     Args:
         second_level_name (str): second level name, see below
+        second_level_contents (list): second level contents, see below
         third_level_name (str): third level name, see below
+        third_level_contents (list): third level contents, see below
         fourth_level_name (str): fourth level ane, see below
+        fourth_level_contents (list): fourth level contents, see below
         interaction_list (list): list of available interactions
         clear_screen (bool, optional): should clear screen. Defaults to False.
         use_prompt (bool, optional): should use rich's prompt. Defaults to True.
@@ -91,6 +96,14 @@ def print_header(second_level_name: str, third_level_name: str,
               car:
                 interactions:
                   wash - wash car
+                  back - go back;
+        simulat
+          panel:
+            Energy: 24%
+            bedroom:
+              bed:
+                interactions:
+                  sleep - go to sleep
                   back - go back
 
     Returns:
@@ -102,13 +115,18 @@ def print_header(second_level_name: str, third_level_name: str,
     if clear_screen:
         clear()
     print(f"""[b green]simulat[/b green]
-  [b red]{second_level_name}:[/b red]
-    [b yellow]{third_level_name}:[/b yellow]
-      [b cyan]{fourth_level_name}:[/b cyan]
-        [b blue]interactions:[/b blue]""")
+  [b red]{second_level_name}:[/b red]""")
+    for dict in second_level_contents:
+        print(f"    [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
+    print(f"    [b yellow]{third_level_name}:[/b yellow]")
+    for dict in third_level_contents:
+        print(f"      [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
+    print(f"      [b cyan]{fourth_level_name}")
+    for dict in fourth_level_contents:
+        print(f"         [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
 
     for dict in interaction_list:
-        print(f"          [magenta]{dict['name']}[/magenta] - {dict['desc']}")
+        print(f"         [magenta]{dict['name']}[/magenta] - {dict['desc']}")
         names.append(dict['name'])
     if use_prompt:
         prompt = Prompt.ask(f"{third_level_name}", choices=names, default='back', show_choices=False)
