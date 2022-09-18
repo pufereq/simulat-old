@@ -105,11 +105,23 @@ def print_header(second_level_name: str, second_level_contents: list,
                 interactions:
                   sleep - go to sleep
                   back - go back
+    interaction_list example syntax:
+        interaction_list = [{'name': 'cat1', 'data':
+                        [{'name': "foo", 'desc': "foodesc"},
+                         {'name': "bar", 'desc': "bardesc"},
+                         {'name': "zar", 'desc': "zardesc"}]},
+                        {'name': 'cat2', 'data':
+                         [{'name': "baz", 'desc': "bazdesc"}]},
+                        {'name': None, 'data':
+                         [{'name': "qaz", 'desc': "qazdesc"},
+                          {'name': "waq", 'desc': "waqdesc"}]}]
 
     Returns:
-        str: _description_
+        str: prompt input
     """
-    interaction_list.append({'name': 'back', 'desc': "Go back"})
+    print(interaction_list)
+    interaction_list.append({'name': None, 'data':
+                             [{'name': 'back', 'desc': "go back"}]})
     if use_prompt:
         names = []
     if clear_screen:
@@ -125,9 +137,32 @@ def print_header(second_level_name: str, second_level_contents: list,
     for dict in fourth_level_contents:
         print(f"         [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
 
-    for dict in interaction_list:
-        print(f"         [magenta]{dict['name']}[/magenta] - {dict['desc']}")
-        names.append(dict['name'])
+    for index in range(len(interaction_list)):
+        if interaction_list[index]['name'] is not None:
+            interaction_list[index]['priority'] = 1
+        else:
+            interaction_list[index]['priority'] = 0
+    interaction_list = sorted(interaction_list, key=lambda sort: sort['priority'], reverse=True)
+
+    for index in range(len(interaction_list)):
+        category = interaction_list[index]['name']
+        if category is not None:
+            print(f"         [b white]{category}:[/b white]")
+
+        for n in range(len(interaction_list[index]['data'])):
+            # print(interaction_list[index]['data'][n - 1])
+            # print(n)
+            name = interaction_list[index]['data'][n - 1]['name']
+            desc = interaction_list[index]['data'][n - 1]['desc']
+            if category is not None:
+                print(f"           [magenta]{name}[/magenta] - [gray]{desc}[/gray]")
+            else:
+                print(f"         [magenta]{name}[/magenta] - [gray]{desc}[/gray]")
+        try:
+            interaction_list.remove(index)
+        except ValueError:
+            pass  # skip
+
     if use_prompt:
         prompt = Prompt.ask(f"{third_level_name}", choices=names, default='back', show_choices=False)
         if go_back is not None:
@@ -136,6 +171,9 @@ def print_header(second_level_name: str, second_level_contents: list,
         return prompt
         # print(prompt)
     # example: print_header('garden', 'interactions', [{'name': 'foo', 'desc': 'bar'}, {'name': 'test', 'desc': 'test'}])
+
+
+# def category():
 
 
 def print_state(source: str, message: str,
