@@ -16,10 +16,11 @@ class Bathroom():
     def room(self):
         from data.game import panel
         clear()
-        prompt = print_header("rooms", "bathroom", "room",
-                              [{'name': 'toilet', 'desc': "use the toilet"},
-                               {'name': 'sink', 'desc': "use the sink"},
-                               {'name': 'shower', 'desc': "take a shower"}],
+        prompt = print_header("rooms", [], "bathroom", [], "room", [],
+                              [{'name': None, 'data':
+                               [{'name': 'toilet', 'desc': "use the toilet"},
+                                {'name': 'sink', 'desc': "use the sink"},
+                                {'name': 'shower', 'desc': "take a shower"}]}],
                               go_back=panel)
         if prompt == 'toilet':
             self.toilet()
