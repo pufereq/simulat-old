@@ -20,6 +20,7 @@ from data.classes.rooms.Bathroom.bathroom import Bathroom
 from data.clear import clear
 from data.random.get_names import random_first, random_gender, random_last
 from data.random.random_data import random_fridge
+from data.utils import print_header
 
 
 def new_game(debug=False):
@@ -120,66 +121,95 @@ def panel():
     Shows data, allows to interact with game.
     """
     clear()
-    print(f"""[b green]simulat[/b green]
-  [red]panel:[/red]
-    [b yellow]data:[/b yellow]
-      [magenta]first name:[/magenta] [b i blue]{main_character.first_name}[/b i blue]
-      [magenta]last name:[/magenta] [b i blue]{main_character.last_name}[/b i blue]
-      [magenta]gender:[/magenta] [b i blue]{main_character.gender}[/b i blue]
-      [magenta]biography:[/magenta] [b i blue]{main_character.bio}[/b i blue]
-    [b yellow]needs:[/b yellow]
-      [magenta]bladder:[/magenta] [b i blue]{main_character.bladder}[/b i blue]
-      [magenta]hunger:[/magenta] [b i blue]{main_character.hunger}[/b i blue]
-      [magenta]energy:[/magenta] [b i blue]{main_character.energy}[/b i blue]
-      [magenta]fun:[/magenta] [b i blue]{main_character.fun}[/b i blue]
-      [magenta]social:[/magenta] [b i blue]{main_character.social}[/b i blue]
-      [magenta]hygiene:[/magenta] [b i blue]{main_character.hygiene}[/b i blue]
-    [b yellow]budget:[/b yellow]
-      [magenta]money:[/magenta] [b i blue]${main_character.money}[/b i blue]
-    [b yellow]interactions:[/b yellow]
-      [b cyan]home:[/b cyan]
-        [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
-        [magenta]bathroom[/magenta] - [white]go to the bathroom[/white]
-      [b cyan]money:[/b cyan]
-        [magenta]work[/magenta] - [white]get to work[/white]
-      [b cyan]buy:[/bold cyan]
-        [magenta]grocery[/magenta] - [white]grocery store[/white]
-      [b cyan]game:[/b cyan]
-        [magenta]menu[/magenta] - [white]quit to main menu[/white]
-        [magenta]exit[/magenta] - [white]quit simulat[/white]
-    """)
+#     print(f"""[b green]simulat[/b green]
+#   [red]panel:[/red]
+#     [b yellow]data:[/b yellow]
+#       [magenta]first name:[/magenta] [b i blue]{main_character.first_name}[/b i blue]
+#       [magenta]last name:[/magenta] [b i blue]{main_character.last_name}[/b i blue]
+#       [magenta]gender:[/magenta] [b i blue]{main_character.gender}[/b i blue]
+#       [magenta]biography:[/magenta] [b i blue]{main_character.bio}[/b i blue]
+#     [b yellow]needs:[/b yellow]
+#       [magenta]bladder:[/magenta] [b i blue]{main_character.bladder}[/b i blue]
+#       [magenta]hunger:[/magenta] [b i blue]{main_character.hunger}[/b i blue]
+#       [magenta]energy:[/magenta] [b i blue]{main_character.energy}[/b i blue]
+#       [magenta]fun:[/magenta] [b i blue]{main_character.fun}[/b i blue]
+#       [magenta]social:[/magenta] [b i blue]{main_character.social}[/b i blue]
+#       [magenta]hygiene:[/magenta] [b i blue]{main_character.hygiene}[/b i blue]
+#     [b yellow]budget:[/b yellow]
+#       [magenta]money:[/magenta] [b i blue]${main_character.money}[/b i blue]
+#     [b yellow]interactions:[/b yellow]
+#       [b cyan]home:[/b cyan]
+#         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
+#         [magenta]bathroom[/magenta] - [white]go to the bathroom[/white]
+#       [b cyan]money:[/b cyan]
+#         [magenta]work[/magenta] - [white]get to work[/white]
+#       [b cyan]buy:[/bold cyan]
+#         [magenta]grocery[/magenta] - [white]grocery store[/white]
+#       [b cyan]game:[/b cyan]
+#         [magenta]menu[/magenta] - [white]quit to main menu[/white]
+#         [magenta]exit[/magenta] - [white]quit simulat[/white]
+#     """)
+#
+#     choice = Prompt.ask('[bold green]panel',
+#                         choices=['fridge', 'grocery', 'work', 'bathroom',
+#                                  'skip', 'menu', 'exit'],
+#                         default='skip',
+#                         show_choices=False)
+    prompt = print_header('game', [], 'panel',
+                          [{'category_name': "simulat data", 'data':
+                            [{'name': "first name", 'desc': main_character.first_name},
+                             {'name': "last name", 'desc': main_character.last_name},
+                             {'name': "gender", 'desc': main_character.gender},
+                             {'name': "bio", 'desc': main_character.bio}]},
+                           {'category_name': "needs", 'data':
+                            [{'name': "bladder", 'desc': main_character.bladder},
+                             {'name': "hunger", 'desc': main_character.hunger},
+                             {'name': "energy", 'desc': main_character.energy},
+                             {'name': "fun", 'desc': main_character.fun},
+                             {'name': 'social', 'desc': main_character.social},
+                             {'name': 'hygiene', 'desc': main_character.hygiene}]},
+                           {'category_name': "budget", 'data':
+                            [{'name': "money", 'desc': f"${main_character.money}"}]}],
 
-    choice = Prompt.ask('[bold green]panel',
-                        choices=['fridge', 'grocery', 'work', 'bathroom',
-                                 'skip', 'menu', 'exit'],
-                        default='skip',
-                        show_choices=False)
-    if choice == 'fridge':
+                          'interactions:', [],
+
+                          [{'category_name': "home", 'data':
+                            [{'name': "fridge", 'desc': 'see contents of the fridge'},
+                             {'name': "bathroom", 'desc': "go to the bathroom"}]},
+                           {'category_name': "money", 'data':
+                            [{'name': "work", 'desc': "go to work"}]},
+                           {'category_name': "buy", 'data':
+                            [{'name': "grocery", 'desc': "go to the grocery store"}]},
+                           {'category_name': "game", 'data':
+                            [{'name': "skip", 'desc': "skip a turn"},
+                             {'name': "menu", 'desc': "quit to main menu"},
+                             {'name': "exit", 'desc': "quit simulat"}]}], default='skip')
+    if prompt == 'fridge':
         home_fridge.interact()
 
-    elif choice == 'grocery':
+    elif prompt == 'grocery':
         grocery_store()
 
-    elif choice == 'work':
+    elif prompt == 'work':
         work.menu()
 
-    elif choice == 'bathroom':
+    elif prompt == 'bathroom':
         bathroom.room()
 
-    elif choice == 'skip':
+    elif prompt == 'skip':
         main_character.deplete_needs()
         panel()
 
-    elif choice == 'menu':
+    elif prompt == 'menu':
         from main import start_game  # import game start to exit to start menu
 
-        choice = Confirm.ask("are you sure?", default=False)
-        if choice:
+        prompt = Confirm.ask("are you sure?", default=False)
+        if prompt:
             start_game()
         else:
             panel()
 
-    elif choice == 'exit':
+    elif prompt == 'exit':
         choice = Confirm.ask("are you sure?", default=False)
         if choice:
             exit()
