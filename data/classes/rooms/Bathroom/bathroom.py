@@ -17,7 +17,7 @@ class Bathroom():
         from data.game import panel
         clear()
         prompt = print_header("rooms", [], "bathroom", [], "room", [],
-                              [{'name': None, 'data':
+                              [{'category_name': None, 'data':
                                [{'name': 'toilet', 'desc': "use the toilet"},
                                 {'name': 'sink', 'desc': "use the sink"},
                                 {'name': 'shower', 'desc': "take a shower"}]}],
@@ -33,9 +33,10 @@ class Bathroom():
         from data.game import main_character
         # global bladder  # temporary
         clear()
-        prompt = print_header("rooms", "bathroom", "toilet",
-                              [{'name': 'use', 'desc': "use the toilet"},
-                               {'name': 'quick', 'desc': "take a quick pee"}],
+        prompt = print_header("rooms", [], "bathroom", [], "toilet", [],
+                              [{'category_name': None, 'data':
+                               [{'name': "use", 'desc': 'use the toilet'},
+                                {'name': "quick", 'desc': "quickly use the toilet"}]}],
                               go_back=self.room)
         if prompt == 'use':
             changed = change_value(main_character.bladder, 100, set=True)
@@ -54,9 +55,10 @@ class Bathroom():
         from data.game import main_character
         # global hygiene  # temporary
         clear()
-        prompt = print_header("rooms", "bathroom", "sink",
-                              [{'name': 'use', 'desc': "wash hands"},
-                               {'name': 'brush', 'desc': "brush teeth."}],
+        prompt = print_header("rooms", [], "bathroom", [], "sink", [],
+                              [{'category_name': None, 'data':
+                               [{'name': 'use', 'desc': "wash hands"},
+                                {'name': 'brush', 'desc': "brush teeth."}]}],
                               go_back=self.room)
         if prompt == 'use':
             changed = change_value(main_character.hygiene, 10)
@@ -75,9 +77,10 @@ class Bathroom():
         from data.game import main_character
         # global hygiene  # temporary
         clear()
-        prompt = print_header("rooms", "bathroom", "shower",
-                              [{'name': 'use', 'desc': "take a shower"},
-                               {'name': 'quick', 'desc': "take a quick shower"}],
+        prompt = print_header("rooms", [], "bathroom", [], "shower", [],
+                              [{'category_name': None, 'data':
+                               [{'name': 'use', 'desc': "take a shower"},
+                                {'name': 'quick', 'desc': "take a quick shower"}]}],
                               go_back=self.room)
         if prompt == 'use':
             changed = change_value(main_character.hygiene, 100, set=True)
