@@ -64,8 +64,8 @@ def change_value(value: int, change: int, set: bool = False,
 def print_header(second_level_name: str, second_level_contents: list,
                  third_level_name: str, third_level_contents: list,
                  fourth_level_name: str, fourth_level_contents: list,
-                 interaction_list: list,
-                 clear_screen=False, use_prompt=True, go_back=None) -> str:
+                 interaction_list: list, clear_screen=False,
+                 use_prompt=True, go_back=None, default=None) -> str:
     """Print header for menus.
 
     Adds back to interaction_list to go back.
@@ -81,6 +81,9 @@ def print_header(second_level_name: str, second_level_contents: list,
         clear_screen (bool, optional): should clear screen. Defaults to False.
         use_prompt (bool, optional): should use rich's prompt. Defaults to True.
         go_back (func, optional): should add an option for going back. Defaults to None.
+        default (str, optional): should add default option in rich's prompt.
+        If set to None, go_back takes over, if go_back = None, rich's default
+        is set to None (doesn't display). Defaults to None.
 
     Example:
         simulat
@@ -119,61 +122,91 @@ def print_header(second_level_name: str, second_level_contents: list,
     Returns:
         str: prompt input
     """
-    print(interaction_list)
-    interaction_list.append({'name': None, 'data':
-                             [{'name': 'back', 'desc': "go back"}]})
-    if use_prompt:
-        names = []
+    global names
+    names = []
+    if go_back is None:
+        include_back = False
+    else:
+        include_back = True
     if clear_screen:
         clear()
     print(f"""[b green]simulat[/b green]
   [b red]{second_level_name}:[/b red]""")
-    for dict in second_level_contents:
-        print(f"    [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
+    print_category(second_level_contents, 6, False, 'red')
     print(f"    [b yellow]{third_level_name}:[/b yellow]")
-    for dict in third_level_contents:
-        print(f"      [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
+    print_category(third_level_contents, 8, False, 'yellow')
     print(f"      [b cyan]{fourth_level_name}")
-    for dict in fourth_level_contents:
-        print(f"         [magenta]{dict['name']}:[/magenta] [b blue]{dict['data']}[/b blue]")
+    print_category(fourth_level_contents, 10, False)
 
-    for index in range(len(interaction_list)):
-        if interaction_list[index]['name'] is not None:
-            interaction_list[index]['priority'] = 1
-        else:
-            interaction_list[index]['priority'] = 0
-    interaction_list = sorted(interaction_list, key=lambda sort: sort['priority'], reverse=True)
-
-    for index in range(len(interaction_list)):
-        category = interaction_list[index]['name']
-        if category is not None:
-            print(f"         [b white]{category}:[/b white]")
-
-        for n in range(len(interaction_list[index]['data'])):
-            # print(interaction_list[index]['data'][n - 1])
-            # print(n)
-            name = interaction_list[index]['data'][n - 1]['name']
-            desc = interaction_list[index]['data'][n - 1]['desc']
-            if category is not None:
-                print(f"           [magenta]{name}[/magenta] - [gray]{desc}[/gray]")
-            else:
-                print(f"         [magenta]{name}[/magenta] - [gray]{desc}[/gray]")
-        try:
-            interaction_list.remove(index)
-        except ValueError:
-            pass  # skip
+    interaction_list = sort_categories(interaction_list, include_back)
+    print_category(interaction_list, 10, True)
 
     if use_prompt:
-        prompt = Prompt.ask(f"{third_level_name}", choices=names, default='back', show_choices=False)
-        if go_back is not None:
-            if prompt == 'back':
-                go_back()
+        if default is None:
+            if go_back is not None:
+                prompt = Prompt.ask(f"{third_level_name}", choices=names, default='back', show_choices=False)
+                if prompt == 'back':
+                    go_back()
+            else:
+                prompt = Prompt.ask(f"{third_level_name}", choices=names, default=None, show_choices=False)
+        else:
+            prompt = Prompt.ask(f"{third_level_name}", choices=names, default=default, show_choices=False)
         return prompt
-        # print(prompt)
-    # example: print_header('garden', 'interactions', [{'name': 'foo', 'desc': 'bar'}, {'name': 'test', 'desc': 'test'}])
 
 
-# def category():
+def sort_categories(list: list, include_back: bool = True):
+    found = False
+    for index in range(len(list)):
+        if list[index]['category_name'] is not None:
+            list[index]['priority'] = 1
+        else:
+            list[index]['priority'] = 0
+        if list[index]['category_name'] == 'game':
+            if include_back:
+                found = True
+                add_back = list[index]['data']
+                add_back.append({'name': "back", 'desc': 'go back'})
+    if found is False:
+        if include_back:
+            list.append({'category_name': 'game', 'data':
+                        [{'name': 'back', 'desc': "go back"}],
+                        'priority': -1})
+    list = sorted(list, key=lambda sort: sort['priority'], reverse=True)
+    return list
+
+
+def print_category(list: list, indentation: int,
+                   is_interaction: bool, color: str = 'b white'):
+    """Print categories.
+
+    Args:
+        list (list): list to process.
+        indentation (int): amount of spaces to insert before entries and
+        category.
+        is_interaction (bool): used for separating interactions and data.
+        color (str, optional): color of entries. Defaults to 'b white'.
+    """
+    for index in range(len(list)):
+        # print(index)
+        category = list[index]['category_name']
+        if category is not None:
+            print(' ' * (indentation - 2), f"[{color}]{category}:[/{color}]", sep='')
+
+        for n in range(len(list[index]['data'])):
+            # print(interaction_list[index]['data'][n - 1])
+            # print(n)
+            name = list[index]['data'][n]['name']
+            if is_interaction:
+                names.append(name)
+            desc = list[index]['data'][n]['desc']
+            if category is not None:
+                print(' ' * indentation, f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+            else:
+                print(' ' * (indentation - 2), f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+        try:
+            list.remove(index)
+        except ValueError:
+            pass  # skip
 
 
 def print_state(source: str, message: str,
