@@ -121,40 +121,6 @@ def panel():
     Shows data, allows to interact with game.
     """
     clear()
-#     print(f"""[b green]simulat[/b green]
-#   [red]panel:[/red]
-#     [b yellow]data:[/b yellow]
-#       [magenta]first name:[/magenta] [b i blue]{main_character.first_name}[/b i blue]
-#       [magenta]last name:[/magenta] [b i blue]{main_character.last_name}[/b i blue]
-#       [magenta]gender:[/magenta] [b i blue]{main_character.gender}[/b i blue]
-#       [magenta]biography:[/magenta] [b i blue]{main_character.bio}[/b i blue]
-#     [b yellow]needs:[/b yellow]
-#       [magenta]bladder:[/magenta] [b i blue]{main_character.bladder}[/b i blue]
-#       [magenta]hunger:[/magenta] [b i blue]{main_character.hunger}[/b i blue]
-#       [magenta]energy:[/magenta] [b i blue]{main_character.energy}[/b i blue]
-#       [magenta]fun:[/magenta] [b i blue]{main_character.fun}[/b i blue]
-#       [magenta]social:[/magenta] [b i blue]{main_character.social}[/b i blue]
-#       [magenta]hygiene:[/magenta] [b i blue]{main_character.hygiene}[/b i blue]
-#     [b yellow]budget:[/b yellow]
-#       [magenta]money:[/magenta] [b i blue]${main_character.money}[/b i blue]
-#     [b yellow]interactions:[/b yellow]
-#       [b cyan]home:[/b cyan]
-#         [magenta]fridge[/magenta] - [white]see contents of the fridge[/white]
-#         [magenta]bathroom[/magenta] - [white]go to the bathroom[/white]
-#       [b cyan]money:[/b cyan]
-#         [magenta]work[/magenta] - [white]get to work[/white]
-#       [b cyan]buy:[/bold cyan]
-#         [magenta]grocery[/magenta] - [white]grocery store[/white]
-#       [b cyan]game:[/b cyan]
-#         [magenta]menu[/magenta] - [white]quit to main menu[/white]
-#         [magenta]exit[/magenta] - [white]quit simulat[/white]
-#     """)
-#
-#     choice = Prompt.ask('[bold green]panel',
-#                         choices=['fridge', 'grocery', 'work', 'bathroom',
-#                                  'skip', 'menu', 'exit'],
-#                         default='skip',
-#                         show_choices=False)
     prompt = print_header('game', [], 'panel',
                           [{'category_name': "simulat data", 'data':
                             [{'name': "first name", 'desc': main_character.first_name},
