@@ -66,7 +66,8 @@ def change_value(value: int, change: int, set: bool = False,
     old_value = value
     if not set:
         value += change
-        value = cap(value, min_value, max_value)
+        if cap_value:
+            value = cap(value, min_value, max_value)
     else:
         value = change
 
