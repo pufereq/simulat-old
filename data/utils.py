@@ -187,11 +187,11 @@ def sort_categories(list: list, include_back: bool = True):
             if include_back:
                 found = True
                 add_back = list[index]['data']
-                add_back.append({'name': "back", 'desc': 'go back'})
+                add_back.append({'name': "back", 'desc': 'go back', 'interaction': True})
     if found is False:
         if include_back:
             list.append({'category_name': 'game', 'data':
-                        [{'name': 'back', 'desc': "go back"}],
+                        [{'name': 'back', 'desc': "go back", 'interaction': True}],
                         'priority': -1})
     list = sorted(list, key=lambda sort: sort['priority'], reverse=True)
     return list
