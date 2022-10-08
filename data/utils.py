@@ -209,22 +209,27 @@ def print_category(list: list, indentation: int,
         color (str, optional): color of entries. Defaults to 'b white'.
     """
     for index in range(len(list)):
-        # print(index)
         category = list[index]['category_name']
         if category is not None:
             print(' ' * (indentation - 2), f"[{color}]{category}:[/{color}]", sep='')
 
         for n in range(len(list[index]['data'])):
-            # print(interaction_list[index]['data'][n - 1])
-            # print(n)
-            name = list[index]['data'][n]['name']
-            if is_interaction:
-                names.append(name)
-            desc = list[index]['data'][n]['desc']
-            if category is not None:
-                print(' ' * indentation, f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
-            else:
-                print(' ' * (indentation - 2), f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+            if list[index]['data'][n] is not None:
+                name = list[index]['data'][n]['name']
+                if is_interaction:
+                    if list[index]['data'][n]['interaction']:
+                        names.append(name)
+                desc = list[index]['data'][n]['desc']
+                if category is not None:
+                    if list[index]['data'][n]['interaction'] is True:
+                        print(' ' * indentation, f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+                    else:
+                        print(' ' * indentation, f"[magenta]{name}[/magenta]: [gray]{desc}[/gray]", sep='')
+                else:
+                    if list[index]['data'][n]['interaction'] is True:
+                        print(' ' * (indentation - 2), f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+                    else:
+                        print(' ' * (indentation - 2), f"[magenta]{name}[/magenta]: [gray]{desc}[/gray]", sep='')
         try:
             list.remove(index)
         except ValueError:
