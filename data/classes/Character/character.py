@@ -1,6 +1,6 @@
 """Character class."""
 
-from data.random.random_data import random_deplete, random_money
+from data.res.random_data import random_deplete, random_money
 
 
 class Character():
