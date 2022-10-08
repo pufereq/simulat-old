@@ -237,26 +237,29 @@ def print_category(list: list, indentation: int,
 
 
 def print_state(source: str, message: str,
-                goto: str, sleep_time: float = 1.5,
-                old_state: any = None, new_state: any = None,
-                prefix: str = None, suffix: str = None,
-                source_color: str = 'b yellow', message_color: str = 'yellow',
-                clear_screen: bool = True) -> None:
-    """Print state of operation to the user.
+                redirect: str, level: int,
+                confirm: bool, type: str = None,
+                sleep_time: float = 3, old_state: any = None,
+                new_state: any = None, prefix: str = None,
+                suffix: str = None, clear_screen: bool = True) -> None:
+    """Print state of operation to the user. If level >= 3, user has to confirm further action.
 
     e.g. You have used the toilet.
 
     Args:
-        source (str): source of the operation, e.g. toilet
-        message (str): message
-        goto (func): function to go to after time passed.
-        sleep_time (float, optional): time to display message before going to another function. Defaults to 1.5.
-        old_state (any, optional): State before operation. Defaults to None.
-        new_state (any, optional): State after operation. Defaults to None.
-        prefix (str, optional): Prefix of state. Defaults to None.
-        suffix (str, optional): Suffix of state. Defaults to None.
-        source_color (str, optional): color of source (rich syntax). Defaults to 'b yellow'.
-        message_color (str, optional): color of message (rich syntax). Defaults to 'yellow'.
+        source (str): source of operation.
+        message (str): message.
+        redirect (func): function to redirect to after time passed. If set to None,
+        do not redirect.
+        level (int): importance level of message. (range: 0-4)
+        confirm (bool): if user has to confirm further action.
+        type (str): type of operation. if None, define type using level.
+        sleep_time (float, optional): time to display message before going to another function.
+        Does not apply if confirm is True. Defaults to 3.
+        old_state (any, optional): state before operation. Defaults to None.
+        new_state (any, optional): state after operation. Defaults to None.
+        prefix (str, optional): prefix of state. Defaults to None.
+        suffix (str, optional): suffix of state. Defaults to None.
         clear_screen (bool, optional): should clear screen. Defaults to True.
     """
     if prefix is None:
