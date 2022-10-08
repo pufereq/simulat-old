@@ -149,9 +149,8 @@ def print_header(second_level_name: str, second_level_contents: list,
     print_category(second_level_contents, 6, False, 'red')
     print(f"    [b yellow]{third_level_name}:[/b yellow]")
     print_category(third_level_contents, 8, False, 'yellow')
-    print(f"      [b cyan]{fourth_level_name}")
-    print_category(fourth_level_contents, 10, False)
-
+    if use_prompt:
+        print(f"      [b cyan]{interaction_cat_name}")
     interaction_list = sort_categories(interaction_list, include_back)
     print_category(interaction_list, 10, True)
 
