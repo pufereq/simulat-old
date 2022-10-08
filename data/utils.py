@@ -168,6 +168,15 @@ def print_header(second_level_name: str, second_level_contents: list,
 
 
 def sort_categories(list: list, include_back: bool = True):
+    """Sort categories by priority key.
+
+    Args:
+        list (list): list containing all categories to sort.
+        include_back (bool, optional): should add back interaction. Defaults to True.
+
+    Returns:
+        list: Sorted list.
+    """
     found = False
     for index in range(len(list)):
         if list[index]['category_name'] is not None:
