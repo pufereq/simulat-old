@@ -8,8 +8,8 @@ from rich import print
 
 
 from data.clear import clear
-# from dialogs.game import panel, main_character
-from data.random.random_data import get_work_data, random_rob
+from data.res.random_data import get_work_data, random_rob
+from data.utils import change_value, print_header, print_state
 
 
 class Work():
@@ -23,26 +23,20 @@ class Work():
     def menu(self):
         """Work menu, can pick different jobs."""
         from data.game import panel
-        clear()
-        print(f"""[b green]simulat[/b green]
-    [red]work:[/red]
-        [b yellow]menu:[/b yellow]
-        [magenta]newspaper[/magenta] - [white]deliver newspapers ($15 / takes 9 seconds)[/white]
-        [magenta]pizza[/magenta] - [white]deliver pizzas ($20 / takes 10 seconds)[/white]
-        [magenta]office[/magenta] - [white]work at an office ($40 / takes 19 seconds)[/white]
-        [magenta]rob[/magenta] - [white]rob people (may earn up to $1000 (risky!))[/white]
-        """)
-        choice = Prompt.ask('work',
-                            choices=['newspaper', 'pizza', 'office',
-                                     'rob', 'back'],
-                            default='back',
-                            show_choices=False)
-        if choice == 'back':
+        prompt = print_header("money", [], "work", [], "interactions:",
+                              [{'category_name': "work", 'data':
+                                [{'name': "newspaper", 'desc': "deliver newspapers ($15 / 9s)", 'interaction': True},
+                                 {'name': "pizza", 'desc': "deliver pizzas ($20 / 10s)", 'interaction': True},
+                                 {'name': "office", 'desc': "work at an office ($40 / 19s)", 'interaction': True}]},
+                               {'category_name': "risky", 'data':
+                                [{'name': "rob", 'desc': "pickpocket (may earn $1000 / 3-14s)", 'interaction': True}]}],
+                              clear_screen=True, go_back=panel)
+        if prompt == 'back':
             panel()
-        elif choice == 'rob':
+        elif prompt == 'rob':
             self.rob()
         else:
-            self.work(choice)
+            self.work(prompt)
 
     def work(self, workplace):
         """Use rich's track to 'visualize' work progress.
@@ -61,10 +55,10 @@ class Work():
                 time.sleep(0.01)
         except KeyboardInterrupt:
             print("aborted")
-        main_character.money += work_pay
-        print(f"[i yellow]you now have {main_character.money}.")
-        time.sleep(2)
-        self.menu()
+        changed = change_value(main_character.money, work_pay, cap_value=False)
+        print_state("work", f"you have worked ({workplace}) and got paid ${work_pay}",
+                    self.menu, 1, False,
+                    old_state=changed['old'], new_state=changed['new'], prefix='$')
 
     def rob(self):
         """Use rich's track to 'visualize' robbing progess."""
@@ -77,21 +71,33 @@ class Work():
                 time.sleep(0.01)
         except KeyboardInterrupt:
             print("aborted")
+        rob_data['money'] = 10
+        rob_data['got_caught'] = True
 
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
-                print("[i yellow]you have lost all of your stolen money while running away from the police")
-                self.menu()
-
-            print(f"[i yellow]police has caught you! you have to pay a [b red]${rob_data['money']}[/b red] fine.")
-            main_character.money -= rob_data['money']
+                changed = change_value(main_character.money, rob_data['money'], cap_value=False, set=True)
+                print_state("work", f"you have lost all your money while fleeing from the police.",
+                            None, 1, False,
+                            old_state=changed['old'], new_state=changed['new'], prefix='$')
+            else:
+                changed = change_value(main_character.money, -rob_data['money'], cap_value=False)
+                print_state("work", f"police has caught you! you paid a ${rob_data['money']} fine.",
+                            None, 1, False,
+                            old_state=changed['old'], new_state=changed['new'], prefix='$')
         else:
             if rob_data['money'] == 0:
-                print("[i yellow]you have bumped into a stranger and lost your money")
-                self.menu()
-
-            print(f"[i yellow]you have stolen [b red]${rob_data['money']}")
-            main_character.money += rob_data['money']
-        print(f"[i yellow]you now have ${main_character.money}.")
-        time.sleep(2)
+                changed = change_value(main_character.money, rob_data['money'], cap_value=False)
+                print_state("work", f"you have bumped into a stranger and lost your stolen money.",
+                            None, 1, False,
+                            old_state=changed['old'], new_state=changed['new'], prefix='$')
+            else:
+                changed = change_value(main_character.money, rob_data['money'], cap_value=False)
+                print_state("work", f"you have succesfully pickpocketed someone!",
+                            None, 1, False,
+                            old_state=changed['old'], new_state=changed['new'], prefix='$')
+        if rob_data['got_caught']:
+            main_character.money = -changed['new']
+        else:
+            main_character.money = changed
         self.menu()

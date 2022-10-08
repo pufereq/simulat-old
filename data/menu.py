@@ -29,4 +29,4 @@ def main_menu():
     elif choice == 3:
         exit()
     elif choice == 9:
-        new_game(True)
+        new_game(debug=True)

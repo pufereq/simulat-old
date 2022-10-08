@@ -4,9 +4,24 @@
 import time
 
 from rich import print
-from rich.prompt import Prompt
+from rich.prompt import Prompt, Confirm
 
 from data.clear import clear
+
+
+def empty_var(var_type):
+    """Return empty variable of specified type.
+
+    Args:
+        var_type (type): name of variable type. Available types:
+        int; float; str; tuple; list; dict
+
+    Returns:
+        any: empty variable of specified type.
+    """
+    empty_vars = {int: int(), float: float(), str: str(),
+                  tuple: tuple(), list: list(), dict: dict()}
+    return empty_vars[var_type]
 
 
 def cap(value: int, min_value: int = 0, max_value: int = 100, throw_error=False) -> int:
@@ -51,7 +66,8 @@ def change_value(value: int, change: int, set: bool = False,
     old_value = value
     if not set:
         value += change
-        value = cap(value, min_value, max_value)
+        if cap_value:
+            value = cap(value, min_value, max_value)
     else:
         value = change
 
@@ -63,9 +79,9 @@ def change_value(value: int, change: int, set: bool = False,
 
 def print_header(second_level_name: str, second_level_contents: list,
                  third_level_name: str, third_level_contents: list,
-                 fourth_level_name: str, fourth_level_contents: list,
-                 interaction_list: list, clear_screen=False,
-                 use_prompt=True, go_back=None, default=None) -> str:
+                 interaction_cat_name: str, interaction_list: list,
+                 clear_screen=False, use_prompt=True,
+                 go_back=None, default=None) -> str | None:
     """Print header for menus.
 
     Adds back to interaction_list to go back.
@@ -75,9 +91,8 @@ def print_header(second_level_name: str, second_level_contents: list,
         second_level_contents (list): second level contents, see below
         third_level_name (str): third level name, see below
         third_level_contents (list): third level contents, see below
-        fourth_level_name (str): fourth level ane, see below
-        fourth_level_contents (list): fourth level contents, see below
-        interaction_list (list): list of available interactions
+        interaction_cat_name (str): interaction category name, see below
+        interaction_list (list): list of available interactions; if None, won't display interaction_cat_name
         clear_screen (bool, optional): should clear screen. Defaults to False.
         use_prompt (bool, optional): should use rich's prompt. Defaults to True.
         go_back (func, optional): should add an option for going back. Defaults to None.
@@ -89,25 +104,23 @@ def print_header(second_level_name: str, second_level_contents: list,
         simulat
           second_level_name:
             third_level_name:
-              fourth_level_name:
-                interactions:
-                  interaction_list
+              interaction_cat_name:
+                interaction_list
         e.g.
         simulat
           rooms:
             garage:
               car:
-                interactions:
-                  wash - wash car
-                  back - go back;
+                wash - wash car
+                back - go back;
         simulat
           panel:
             Energy: 24%
             bedroom:
               bed:
-                interactions:
-                  sleep - go to sleep
-                  back - go back
+                sleep - go to sleep
+                back - go back
+
     interaction_list example syntax:
         interaction_list = [{'name': 'cat1', 'data':
                         [{'name': "foo", 'desc': "foodesc"},
@@ -121,6 +134,7 @@ def print_header(second_level_name: str, second_level_contents: list,
 
     Returns:
         str: prompt input
+        None: if use_prompt=False
     """
     global names
     names = []
@@ -135,9 +149,8 @@ def print_header(second_level_name: str, second_level_contents: list,
     print_category(second_level_contents, 6, False, 'red')
     print(f"    [b yellow]{third_level_name}:[/b yellow]")
     print_category(third_level_contents, 8, False, 'yellow')
-    print(f"      [b cyan]{fourth_level_name}")
-    print_category(fourth_level_contents, 10, False)
-
+    if use_prompt:
+        print(f"      [b cyan]{interaction_cat_name}")
     interaction_list = sort_categories(interaction_list, include_back)
     print_category(interaction_list, 10, True)
 
@@ -155,6 +168,15 @@ def print_header(second_level_name: str, second_level_contents: list,
 
 
 def sort_categories(list: list, include_back: bool = True):
+    """Sort categories by priority key.
+
+    Args:
+        list (list): list containing all categories to sort.
+        include_back (bool, optional): should add back interaction. Defaults to True.
+
+    Returns:
+        list: Sorted list.
+    """
     found = False
     for index in range(len(list)):
         if list[index]['category_name'] is not None:
@@ -165,11 +187,11 @@ def sort_categories(list: list, include_back: bool = True):
             if include_back:
                 found = True
                 add_back = list[index]['data']
-                add_back.append({'name': "back", 'desc': 'go back'})
+                add_back.append({'name': "back", 'desc': 'go back', 'interaction': True})
     if found is False:
         if include_back:
             list.append({'category_name': 'game', 'data':
-                        [{'name': 'back', 'desc': "go back"}],
+                        [{'name': 'back', 'desc': "go back", 'interaction': True}],
                         'priority': -1})
     list = sorted(list, key=lambda sort: sort['priority'], reverse=True)
     return list
@@ -187,22 +209,27 @@ def print_category(list: list, indentation: int,
         color (str, optional): color of entries. Defaults to 'b white'.
     """
     for index in range(len(list)):
-        # print(index)
         category = list[index]['category_name']
         if category is not None:
             print(' ' * (indentation - 2), f"[{color}]{category}:[/{color}]", sep='')
 
         for n in range(len(list[index]['data'])):
-            # print(interaction_list[index]['data'][n - 1])
-            # print(n)
-            name = list[index]['data'][n]['name']
-            if is_interaction:
-                names.append(name)
-            desc = list[index]['data'][n]['desc']
-            if category is not None:
-                print(' ' * indentation, f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
-            else:
-                print(' ' * (indentation - 2), f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+            if list[index]['data'][n] is not None:
+                name = list[index]['data'][n]['name']
+                if is_interaction:
+                    if list[index]['data'][n]['interaction']:
+                        names.append(name)
+                desc = list[index]['data'][n]['desc']
+                if category is not None:
+                    if list[index]['data'][n]['interaction'] is True:
+                        print(' ' * indentation, f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+                    else:
+                        print(' ' * indentation, f"[magenta]{name}[/magenta]: [gray]{desc}[/gray]", sep='')
+                else:
+                    if list[index]['data'][n]['interaction'] is True:
+                        print(' ' * (indentation - 2), f"[magenta]{name}[/magenta] - [gray]{desc}[/gray]", sep='')
+                    else:
+                        print(' ' * (indentation - 2), f"[magenta]{name}[/magenta]: [gray]{desc}[/gray]", sep='')
         try:
             list.remove(index)
         except ValueError:
@@ -210,26 +237,29 @@ def print_category(list: list, indentation: int,
 
 
 def print_state(source: str, message: str,
-                goto: str, sleep_time: float = 1.5,
-                old_state: any = None, new_state: any = None,
-                prefix: str = None, suffix: str = None,
-                source_color: str = 'b yellow', message_color: str = 'yellow',
-                clear_screen: bool = True) -> None:
-    """Print state of operation to the user.
+                redirect: str, level: int,
+                confirm: bool, type: str = None,
+                sleep_time: float = 3, old_state: any = None,
+                new_state: any = None, prefix: str = None,
+                suffix: str = None, clear_screen: bool = True) -> None:
+    """Print state of operation to the user. If level >= 3, user has to confirm further action.
 
     e.g. You have used the toilet.
 
     Args:
-        source (str): source of the operation, e.g. toilet
-        message (str): message
-        goto (func): function to go to after time passed.
-        sleep_time (float, optional): time to display message before going to another function. Defaults to 1.5.
-        old_state (any, optional): State before operation. Defaults to None.
-        new_state (any, optional): State after operation. Defaults to None.
-        prefix (str, optional): Prefix of state. Defaults to None.
-        suffix (str, optional): Suffix of state. Defaults to None.
-        source_color (str, optional): color of source (rich syntax). Defaults to 'b yellow'.
-        message_color (str, optional): color of message (rich syntax). Defaults to 'yellow'.
+        source (str): source of operation.
+        message (str): message.
+        redirect (func): function to redirect to after time passed. If set to None,
+        do not redirect.
+        level (int): importance level of message. (range: 0-4)
+        confirm (bool): if user has to confirm further action.
+        type (str): type of operation. if None, define type using level.
+        sleep_time (float, optional): time to display message before going to another function.
+        Does not apply if confirm is True. Defaults to 3.
+        old_state (any, optional): state before operation. Defaults to None.
+        new_state (any, optional): state after operation. Defaults to None.
+        prefix (str, optional): prefix of state. Defaults to None.
+        suffix (str, optional): suffix of state. Defaults to None.
         clear_screen (bool, optional): should clear screen. Defaults to True.
     """
     if prefix is None:
@@ -238,9 +268,72 @@ def print_state(source: str, message: str,
         suffix = ''
     if clear_screen:
         clear()
-    print(f"[{source_color}]{source}: [/{source_color}][{message_color}]{message}")
+    if level == 0:
+        if type is None:
+            type = "TIP"
+        source_color = 'b white'
+        message_color = 'gray'
+        symbol = ':white_check_mark:'
+    elif level == 1:
+        if type is None:
+            type = "INFO"
+        source_color = 'b yellow'
+        message_color = 'i yellow'
+        symbol = ':information:'
+    elif level == 2:
+        if type is None:
+            type = "WARNING"
+        symbol = ':exclamation_mark:'
+        source_color = 'b dark_orange'
+        message_color = 'i dark_orange'
+    elif level == 3:
+        if type is None:
+            type = "ERROR"
+        symbol = ':no_entry_sign:'
+        source_color = 'b red'
+        message_color = 'i red'
+    elif level == 4:
+        if type is None:
+            type = "FATAL ERROR"
+        symbol = ':stop_sign:'
+        source_color = 'b red'
+        message_color = 'b i bright_red'
+    else:
+        if type is None:
+            type = "NOT DEFINED"
+        source_color = 'b white'
+        message_color = "gray"
+        symbol = "NOT DEFINED"
     if old_state and new_state is not None:
-        print(f"[{source_color}]State: [/{source_color}][red]{prefix}{old_state}{suffix}[/red] \
-[{message_color}]>[/{message_color}] [green]{prefix}{new_state}{suffix}[/green]")
-    time.sleep(sleep_time)
-    goto()
+        state = True
+        diff_state = new_state - old_state
+    else:
+        state = False
+
+    prompt = print_header("error handler", [], type.lower(),
+                          [{'category_name': "details", 'data':
+                            [{'name': f"{symbol} | {type}", 'desc': "", 'interaction': False},
+                             {'name': f"[{source_color}]{source}[/{source_color}]", 'desc': f"[{message_color}]{message}[/{message_color}]", 'interaction': False},
+                             {'name': f"[{source_color}]change[/{source_color}]",
+                              'desc': f"[red]{prefix}{old_state}{suffix}[/red] [yellow]-([b]{prefix}{diff_state}{suffix}[/b])->[/yellow] [green]{prefix}{new_state}{suffix}[/green]",
+                              'interaction': False} if state else None]}],
+                          'actions:' if confirm else None,
+                          [{'category_name': None, 'data':
+                            [{'name': "continue", 'desc': "continue running simulat, may cause problems, not recommended", 'interaction': True},
+                             {'name': "exit", 'desc': "exit simulat", 'interaction': True}]}] if confirm else [],
+                          use_prompt=confirm)
+    if confirm:
+        if prompt == 'continue':
+            prompt = Confirm.ask("are you sure?")
+            if prompt == 'y':
+                pass
+            elif prompt == 'n':
+                print("exiting...")
+                time.sleep(2)
+                exit()
+        elif prompt == 'exit':
+            exit()
+    else:
+        time.sleep(sleep_time)
+    if redirect is not None:
+        redirect()
