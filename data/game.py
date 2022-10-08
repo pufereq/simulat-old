@@ -7,9 +7,6 @@ Returns:
 # game
 
 # imports
-import time
-
-from rich import print
 from rich.prompt import Prompt, IntPrompt, Confirm
 
 from data.classes.Character.character import Character
@@ -18,9 +15,9 @@ from data.classes.Work.work import Work
 from data.classes.rooms.Bathroom.bathroom import Bathroom
 
 from data.clear import clear
-from data.random.get_names import random_first, random_gender, random_last
-from data.random.random_data import random_fridge
-from data.utils import print_header
+from data.res.get_names import random_first, random_gender, random_last
+from data.res.random_data import random_fridge
+from data.utils import print_header, print_state
 
 
 def new_game(debug=False):
