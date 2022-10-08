@@ -4,7 +4,7 @@
 import time
 
 from rich import print
-from rich.prompt import Prompt
+from rich.prompt import Prompt, Confirm
 
 from data.clear import clear
 
