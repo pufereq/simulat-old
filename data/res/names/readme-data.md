@@ -4,7 +4,7 @@
 
 List of common male names.
 
-### source: [CMU School of Computer Science name resources ()](https://www.cs.cmu.edu/Groups/AI/areas/nlp/corpora/names/male.txt)
+### source: [CMU School of Computer Science name resources (male.txt)](https://www.cs.cmu.edu/Groups/AI/areas/nlp/corpora/names/male.txt)
 
 Copyright (c) January 1991 by Mark Kantrowitz.
 2940 names
