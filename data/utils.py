@@ -268,9 +268,72 @@ def print_state(source: str, message: str,
         suffix = ''
     if clear_screen:
         clear()
-    print(f"[{source_color}]{source}: [/{source_color}][{message_color}]{message}")
+    if level == 0:
+        if type is None:
+            type = "TIP"
+        source_color = 'b white'
+        message_color = 'gray'
+        symbol = ':white_check_mark:'
+    elif level == 1:
+        if type is None:
+            type = "INFO"
+        source_color = 'b yellow'
+        message_color = 'i yellow'
+        symbol = ':information:'
+    elif level == 2:
+        if type is None:
+            type = "WARNING"
+        symbol = ':exclamation_mark:'
+        source_color = 'b dark_orange'
+        message_color = 'i dark_orange'
+    elif level == 3:
+        if type is None:
+            type = "ERROR"
+        symbol = ':no_entry_sign:'
+        source_color = 'b red'
+        message_color = 'i red'
+    elif level == 4:
+        if type is None:
+            type = "FATAL ERROR"
+        symbol = ':stop_sign:'
+        source_color = 'b red'
+        message_color = 'b i bright_red'
+    else:
+        if type is None:
+            type = "NOT DEFINED"
+        source_color = 'b white'
+        message_color = "gray"
+        symbol = "NOT DEFINED"
     if old_state and new_state is not None:
-        print(f"[{source_color}]State: [/{source_color}][red]{prefix}{old_state}{suffix}[/red] \
-[{message_color}]>[/{message_color}] [green]{prefix}{new_state}{suffix}[/green]")
-    time.sleep(sleep_time)
-    goto()
+        state = True
+        diff_state = new_state - old_state
+    else:
+        state = False
+
+    prompt = print_header("error handler", [], type.lower(),
+                          [{'category_name': "details", 'data':
+                            [{'name': f"{symbol} | {type}", 'desc': "", 'interaction': False},
+                             {'name': f"[{source_color}]{source}[/{source_color}]", 'desc': f"[{message_color}]{message}[/{message_color}]", 'interaction': False},
+                             {'name': f"[{source_color}]change[/{source_color}]",
+                              'desc': f"[red]{prefix}{old_state}{suffix}[/red] [yellow]-([b]{prefix}{diff_state}{suffix}[/b])->[/yellow] [green]{prefix}{new_state}{suffix}[/green]",
+                              'interaction': False} if state else None]}],
+                          'actions:' if confirm else None,
+                          [{'category_name': None, 'data':
+                            [{'name': "continue", 'desc': "continue running simulat, may cause problems, not recommended", 'interaction': True},
+                             {'name': "exit", 'desc': "exit simulat", 'interaction': True}]}] if confirm else [],
+                          use_prompt=confirm)
+    if confirm:
+        if prompt == 'continue':
+            prompt = Confirm.ask("are you sure?")
+            if prompt == 'y':
+                pass
+            elif prompt == 'n':
+                print("exiting...")
+                time.sleep(2)
+                exit()
+        elif prompt == 'exit':
+            exit()
+    else:
+        time.sleep(sleep_time)
+    if redirect is not None:
+        redirect()
