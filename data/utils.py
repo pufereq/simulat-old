@@ -79,9 +79,9 @@ def change_value(value: int, change: int, set: bool = False,
 
 def print_header(second_level_name: str, second_level_contents: list,
                  third_level_name: str, third_level_contents: list,
-                 fourth_level_name: str, fourth_level_contents: list,
-                 interaction_list: list, clear_screen=False,
-                 use_prompt=True, go_back=None, default=None) -> str:
+                 interaction_cat_name: str, interaction_list: list,
+                 clear_screen=False, use_prompt=True,
+                 go_back=None, default=None) -> str | None:
     """Print header for menus.
 
     Adds back to interaction_list to go back.
@@ -91,9 +91,8 @@ def print_header(second_level_name: str, second_level_contents: list,
         second_level_contents (list): second level contents, see below
         third_level_name (str): third level name, see below
         third_level_contents (list): third level contents, see below
-        fourth_level_name (str): fourth level ane, see below
-        fourth_level_contents (list): fourth level contents, see below
-        interaction_list (list): list of available interactions
+        interaction_cat_name (str): interaction category name, see below
+        interaction_list (list): list of available interactions; if None, won't display interaction_cat_name
         clear_screen (bool, optional): should clear screen. Defaults to False.
         use_prompt (bool, optional): should use rich's prompt. Defaults to True.
         go_back (func, optional): should add an option for going back. Defaults to None.
@@ -105,25 +104,23 @@ def print_header(second_level_name: str, second_level_contents: list,
         simulat
           second_level_name:
             third_level_name:
-              fourth_level_name:
-                interactions:
-                  interaction_list
+              interaction_cat_name:
+                interaction_list
         e.g.
         simulat
           rooms:
             garage:
               car:
-                interactions:
-                  wash - wash car
-                  back - go back;
+                wash - wash car
+                back - go back;
         simulat
           panel:
             Energy: 24%
             bedroom:
               bed:
-                interactions:
-                  sleep - go to sleep
-                  back - go back
+                sleep - go to sleep
+                back - go back
+
     interaction_list example syntax:
         interaction_list = [{'name': 'cat1', 'data':
                         [{'name': "foo", 'desc': "foodesc"},
@@ -137,6 +134,7 @@ def print_header(second_level_name: str, second_level_contents: list,
 
     Returns:
         str: prompt input
+        None: if use_prompt=False
     """
     global names
     names = []
