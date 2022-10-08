@@ -8,8 +8,8 @@ from rich import print
 
 
 from data.clear import clear
-from data.res.random_data import get_work_data, random_rob
-from data.utils import change_value, print_header, print_state
+# from dialogs.game import panel, main_character
+from data.random.random_data import get_work_data, random_rob
 
 
 class Work():

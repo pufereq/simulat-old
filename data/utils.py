@@ -9,6 +9,21 @@ from rich.prompt import Prompt
 from data.clear import clear
 
 
+def empty_var(var_type):
+    """Return empty variable of specified type.
+
+    Args:
+        var_type (type): name of variable type. Available types:
+        int; float; str; tuple; list; dict
+
+    Returns:
+        any: empty variable of specified type.
+    """
+    empty_vars = {int: int(), float: float(), str: str(),
+                  tuple: tuple(), list: list(), dict: dict()}
+    return empty_vars[var_type]
+
+
 def cap(value: int, min_value: int = 0, max_value: int = 100, throw_error=False) -> int:
     """Caps a number between miv_value and max_value.
 
