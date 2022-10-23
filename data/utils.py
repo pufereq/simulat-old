@@ -356,7 +356,7 @@ def print_state(source: str, message: str,
                 exit()
         elif prompt == 'details':
             traceback.print_exc()
-            input("press any key to exit...")
+            input("press enter to exit...")
             exit()
         elif prompt == 'exit':
             exit()
