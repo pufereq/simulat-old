@@ -20,6 +20,7 @@ class Work():
         # self.workplace = None
         pass
 
+    @error_handler
     def menu(self):
         """Work menu, can pick different jobs."""
         from data.game import panel
@@ -38,6 +39,7 @@ class Work():
         else:
             self.work(prompt)
 
+    @error_handler
     def work(self, workplace):
         """Use rich's track to 'visualize' work progress.
 
@@ -60,6 +62,7 @@ class Work():
                     self.menu, 1, False,
                     old_state=changed['old'], new_state=changed['new'], prefix='$')
 
+    @error_handler
     def rob(self):
         """Use rich's track to 'visualize' robbing progess."""
         from data.game import main_character

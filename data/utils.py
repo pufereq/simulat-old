@@ -44,6 +44,7 @@ def empty_var(var_type):
     return empty_vars[var_type]
 
 
+@error_handler
 def cap(value: int, min_value: int = 0, max_value: int = 100, throw_error=False) -> int:
     """Caps a number between miv_value and max_value.
 
@@ -67,6 +68,7 @@ def cap(value: int, min_value: int = 0, max_value: int = 100, throw_error=False)
     return value
 
 
+@error_handler
 def change_value(value: int, change: int, set: bool = False,
                  min_value: int = 0, max_value: int = 100,
                  cap_value: bool = True, return_old_and_new: bool = True) -> any:
@@ -97,6 +99,7 @@ def change_value(value: int, change: int, set: bool = False,
         return value
 
 
+@error_handler
 def print_header(second_level_name: str, second_level_contents: list,
                  third_level_name: str, third_level_contents: list,
                  interaction_cat_name: str, interaction_list: list,
@@ -187,6 +190,7 @@ def print_header(second_level_name: str, second_level_contents: list,
         return prompt
 
 
+@error_handler
 def sort_categories(list: list, include_back: bool = True):
     """Sort categories by priority key.
 
@@ -217,6 +221,7 @@ def sort_categories(list: list, include_back: bool = True):
     return list
 
 
+@error_handler
 def print_category(list: list, indentation: int,
                    is_interaction: bool, color: str = 'b white'):
     """Print categories.
@@ -256,6 +261,7 @@ def print_category(list: list, indentation: int,
             pass  # skip
 
 
+@error_handler
 def print_state(source: str, message: str,
                 redirect: str, level: int,
                 confirm: bool, type: str = None,

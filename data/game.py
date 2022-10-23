@@ -20,6 +20,7 @@ from data.res.random_data import random_fridge
 from data.utils import error_handler, print_header, print_state
 
 
+@error_handler
 def new_game(debug=False):
     """Start a new game.
 
@@ -92,6 +93,7 @@ def new_game(debug=False):
     panel()
 
 
+@error_handler
 def grocery_store():
     """Buy foodstuffs."""
     fridge_contents = home_fridge.fridge_contents()
@@ -141,6 +143,7 @@ def grocery_store():
     grocery_store()
 
 
+@error_handler
 def panel():
     """Game panel.
 

@@ -7,6 +7,7 @@ from data.utils import error_handler
 class Character():
     """A character class used for main character."""
 
+    @error_handler
     def __init__(self, first_name, last_name, gender, bio):
         """Initialize Character class.
 
@@ -30,6 +31,7 @@ class Character():
         self.hygiene = 100
         self.money = random_money()
 
+    @error_handler
     def deplete_needs(self):
         """Lower needs by random value (0,3)."""
         self.bladder -= random_deplete()
@@ -41,6 +43,7 @@ class Character():
 
         self.check_needs()
 
+    @error_handler
     def check_needs(self):
         """Check if needs exceed values from 0 to 100 and cap them."""
         from data.game import panel

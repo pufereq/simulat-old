@@ -10,6 +10,8 @@ import random as rn
 
 from data.utils import error_handler
 
+
+@error_handler
 def random_last():
     """Return random surname.
 
@@ -22,6 +24,7 @@ def random_last():
         return rn.choice((last.read().splitlines()))
 
 
+@error_handler
 def random_first_male():
     """Return random male first name.
 
@@ -34,6 +37,7 @@ def random_first_male():
         return rn.choice((male.read().splitlines()))
 
 
+@error_handler
 def random_first_female():
     """Return random female first name.
 
@@ -46,6 +50,7 @@ def random_first_female():
         return rn.choice((female.read().splitlines()))
 
 
+@error_handler
 def random_first():
     """Return random male or female first name.
 
@@ -61,6 +66,7 @@ def random_first():
     return rn.choice(male + female)
 
 
+@error_handler
 def random_gender():
     """Return random gender.
 
