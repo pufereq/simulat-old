@@ -12,6 +12,23 @@ from rich.prompt import Prompt, Confirm
 from data.clear import clear
 
 
+def error_handler(func):
+    """Exception handler. Use with decorators.
+
+    Args:
+        func (method): method to handle.
+    """
+    def handler(*args, **kwargs):
+        try:
+            func(*args, **kwargs)
+        except Exception as exc:
+            path = inspect.getfile(func)
+            full_path = os.path.abspath(path)
+            funcname = f"{func.__name__}()"
+            print_state(f"{full_path}:{funcname}:{type(exc).__name__}", f"{exc}", None, 3, True)
+    return handler
+
+
 def empty_var(var_type):
     """Return empty variable of specified type.
 
@@ -345,20 +362,3 @@ def print_state(source: str, message: str,
         time.sleep(sleep_time)
     if redirect is not None:
         redirect()
-
-
-def error_handler(func):
-    """Exception handler. Use with decorators.
-
-    Args:
-        func (method): method to handle.
-    """
-    def handler(*args, **kwargs):
-        try:
-            func(*args, **kwargs)
-        except Exception as exc:
-            path = inspect.getfile(func)
-            full_path = os.path.abspath(path)
-            funcname = f"{func.__name__}()"
-            print_state(f"{full_path}:{funcname}:{type(exc).__name__}", f"{exc}", None, 3, True)
-    return handler
