@@ -3,7 +3,7 @@
 from rich.prompt import Prompt
 from rich import print
 
-from data.utils import print_header
+from data.utils import error_handler, print_header
 
 
 class Fridge():

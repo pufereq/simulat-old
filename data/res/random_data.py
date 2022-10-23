@@ -4,6 +4,7 @@
 
 import random as rn
 
+from data.utils import error_handler
 
 def get_work_data(workplace):
     """Return job details based on workplace argument.

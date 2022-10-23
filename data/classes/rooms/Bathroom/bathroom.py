@@ -2,7 +2,7 @@
 
 from rich import print
 
-from data.utils import change_value, print_header, print_state
+from data.utils import change_value, error_handler, print_header, print_state
 from data.clear import clear
 
 

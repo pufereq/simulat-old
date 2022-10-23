@@ -8,6 +8,7 @@ Returns:
 
 import random as rn
 
+from data.utils import error_handler
 
 def random_last():
     """Return random surname.

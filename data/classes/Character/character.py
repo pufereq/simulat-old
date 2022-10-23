@@ -1,6 +1,7 @@
 """Character class."""
 
 from data.res.random_data import random_deplete, random_money
+from data.utils import error_handler
 
 
 class Character():

@@ -17,7 +17,7 @@ from data.classes.rooms.Bathroom.bathroom import Bathroom
 from data.clear import clear
 from data.res.get_names import random_first, random_gender, random_last
 from data.res.random_data import random_fridge
-from data.utils import print_header, print_state
+from data.utils import error_handler, print_header, print_state
 
 
 def new_game(debug=False):
