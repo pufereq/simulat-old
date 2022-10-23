@@ -20,7 +20,8 @@ def error_handler(func):
     """
     def handler(*args, **kwargs):
         try:
-            func(*args, **kwargs)
+            # func(*args, **kwargs)
+            return func(*args, **kwargs)  # the return took me 30 minutes to figure out
         except Exception as exc:
             path = inspect.getfile(func)
             full_path = os.path.abspath(path)
