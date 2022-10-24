@@ -356,7 +356,9 @@ def print_state(source: str, message: str,
                 time.sleep(2)
                 exit(1)
         elif prompt == 'details':
+            print("--START TRACEBACK--\n")
             traceback.print_exc()
+            print("\n--END TRACEBACK--")
             input("press enter to exit...")
             exit(1)
         elif prompt == 'exit':
