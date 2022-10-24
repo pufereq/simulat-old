@@ -349,9 +349,9 @@ def print_state(source: str, message: str,
     if confirm:
         if prompt == 'continue':
             prompt = Confirm.ask("are you sure?")
-            if prompt == 'y':
+            if prompt:
                 pass
-            elif prompt == 'n':
+            else:
                 print("exiting...")
                 time.sleep(2)
                 exit()
