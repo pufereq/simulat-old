@@ -26,7 +26,8 @@ def error_handler(func):
             path = inspect.getfile(func)
             full_path = os.path.abspath(path)
             funcname = f"{func.__name__}()"
-            print_state(f"{full_path}:{funcname}:{type(exc).__name__}", f"{exc}", None, 3, True)
+            print_state(f"{full_path}:{funcname}:{type(exc).__name__}", f"{exc}",
+                        None, 3, True)
     return handler
 
 
