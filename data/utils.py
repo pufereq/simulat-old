@@ -354,13 +354,13 @@ def print_state(source: str, message: str,
             else:
                 print("exiting...")
                 time.sleep(2)
-                exit()
+                exit(1)
         elif prompt == 'details':
             traceback.print_exc()
             input("press enter to exit...")
-            exit()
+            exit(1)
         elif prompt == 'exit':
-            exit()
+            exit(1)
     else:
         time.sleep(sleep_time)
     if redirect is not None:
