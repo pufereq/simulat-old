@@ -57,8 +57,10 @@ class Work():
             print("aborted")
         changed = change_value(main_character.money, work_pay, cap_value=False)
         print_state("work", f"you have worked ({workplace}) and got paid ${work_pay}",
-                    self.menu, 1, False,
+                    None, 1, False,
                     old_state=changed['old'], new_state=changed['new'], prefix='$')
+        main_character.money = changed['new']
+        self.menu()
 
     def rob(self):
         """Use rich's track to 'visualize' robbing progess."""
@@ -71,8 +73,6 @@ class Work():
                 time.sleep(0.01)
         except KeyboardInterrupt:
             print("aborted")
-        rob_data['money'] = 10
-        rob_data['got_caught'] = True
 
         if rob_data['got_caught']:
             if rob_data['money'] == 0:
@@ -97,7 +97,7 @@ class Work():
                             None, 1, False,
                             old_state=changed['old'], new_state=changed['new'], prefix='$')
         if rob_data['got_caught']:
-            main_character.money = -changed['new']
+            main_character.money = changed['new']
         else:
             main_character.money = changed
         self.menu()
