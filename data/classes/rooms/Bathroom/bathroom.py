@@ -2,7 +2,7 @@
 
 from rich import print
 
-from data.utils import change_value, print_header, print_state
+from data.utils import change_value, error_handler, print_header, print_state
 from data.clear import clear
 
 
@@ -10,6 +10,7 @@ class Bathroom():
     def __init__(self) -> None:
         pass
 
+    @error_handler
     def room(self):
         from data.game import panel
         clear()
@@ -26,6 +27,7 @@ class Bathroom():
         elif prompt == 'shower':
             self.shower()
 
+    @error_handler
     def toilet(self):
         from data.game import main_character
         clear()
@@ -49,6 +51,7 @@ class Bathroom():
                         old_state=changed['old'], new_state=changed['new'],
                         suffix='%')
 
+    @error_handler
     def sink(self):
         from data.game import main_character
         clear()
@@ -72,6 +75,7 @@ class Bathroom():
                         old_state=changed['old'], new_state=changed['new'],
                         suffix='%')
 
+    @error_handler
     def shower(self):
         from data.game import main_character
         clear()

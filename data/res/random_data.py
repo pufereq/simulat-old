@@ -4,7 +4,10 @@
 
 import random as rn
 
+from data.utils import error_handler
 
+
+@error_handler
 def get_work_data(workplace):
     """Return job details based on workplace argument.
 
@@ -20,8 +23,11 @@ def get_work_data(workplace):
         return {'pay': 20, 'time': 10}
     elif workplace == 'office':
         return {'pay': 40, 'time': 19}
+    else:
+        return False
 
 
+@error_handler
 def random_deplete():
     """Return a random number from 0 to 3.
 
@@ -33,6 +39,7 @@ def random_deplete():
     return rn.randint(0, 3)
 
 
+@error_handler
 def random_money():
     """Return a random number from 50 to 500.
 
@@ -44,6 +51,7 @@ def random_money():
     return rn.randint(50, 500)
 
 
+@error_handler
 def random_fridge():
     """Return a random number from 0 to 10.
 
@@ -55,6 +63,7 @@ def random_fridge():
     return rn.randint(0, 10)
 
 
+@error_handler
 def random_rob():
     """Return a dict containing details for rob().
 

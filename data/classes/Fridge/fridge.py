@@ -3,14 +3,15 @@
 from rich.prompt import Prompt
 from rich import print
 
-from data.utils import print_header
+from data.utils import error_handler, print_header
 
 
 class Fridge():
     """A Fridge class used to store food."""
 
-    def __init__(self, bread, vegetables, fruits, eggs, flour, meat,
-                 randomize=False):
+    @error_handler
+    def __init__(self, bread: int, vegetables: int, fruits: int,
+                 eggs: int, flour: int, meat: int, randomize=False):
         """Initialize Fridge() class.
 
         Args:
@@ -29,6 +30,7 @@ class Fridge():
         self.flour = flour
         self.meat = meat
 
+    @error_handler
     def interact(self):
         """Interact with Fridge. Allows to eat contents."""
         from data.game import main_character
@@ -49,6 +51,7 @@ class Fridge():
         if prompt == 'eat':
             self.eat_from_fridge()
 
+    @error_handler
     def eat_from_fridge(self):
         """Eat contents from Fridge to raise or decrease needs."""
         from data.game import main_character
@@ -105,12 +108,14 @@ class Fridge():
             main_character.fun -= 4
         self.interact()
 
+    @error_handler
     def fridge_contents(self):
         """Return fridge contents."""
         return {"bread": self.bread, "vegetables": self.vegetables,
                 "fruits": self.fruits, "eggs": self.eggs,
                 "flour": self.flour, "meat": self.meat}
 
+    @error_handler
     def add_to_fridge(self, item, quantity):
         """Add items to the fridge.
 

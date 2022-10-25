@@ -1,12 +1,34 @@
 #!/usr/bin/env python3
 """Utilities."""
 
+import inspect
+import os
 import time
+import traceback
 
 from rich import print
 from rich.prompt import Prompt, Confirm
 
 from data.clear import clear
+
+
+def error_handler(func):
+    """Exception handler. Use with decorators.
+
+    Args:
+        func (method): method to handle.
+    """
+    def handler(*args, **kwargs):
+        try:
+            # func(*args, **kwargs)
+            return func(*args, **kwargs)  # the return took me 30 minutes to figure out
+        except Exception as exc:
+            path = inspect.getfile(func)
+            full_path = os.path.abspath(path)
+            funcname = f"{func.__name__}()"
+            print_state(f"{full_path}:{funcname}:{type(exc).__name__}", f"{exc}",
+                        None, 3, True)
+    return handler
 
 
 def empty_var(var_type):
@@ -236,6 +258,7 @@ def print_category(list: list, indentation: int,
             pass  # skip
 
 
+@error_handler
 def print_state(source: str, message: str,
                 redirect: str, level: int,
                 confirm: bool, type: str = None,
@@ -320,19 +343,26 @@ def print_state(source: str, message: str,
                           'actions:' if confirm else None,
                           [{'category_name': None, 'data':
                             [{'name': "continue", 'desc': "continue running simulat, may cause problems, not recommended", 'interaction': True},
+                             {'name': "details", 'desc': "see more details about the error", 'interaction': True},
                              {'name': "exit", 'desc': "exit simulat", 'interaction': True}]}] if confirm else [],
                           use_prompt=confirm)
     if confirm:
         if prompt == 'continue':
             prompt = Confirm.ask("are you sure?")
-            if prompt == 'y':
+            if prompt:
                 pass
-            elif prompt == 'n':
+            else:
                 print("exiting...")
                 time.sleep(2)
-                exit()
+                exit(1)
+        elif prompt == 'details':
+            print("--START TRACEBACK--\n")
+            traceback.print_exc()
+            print("\n--END TRACEBACK--")
+            input("press enter to exit...")
+            exit(1)
         elif prompt == 'exit':
-            exit()
+            exit(1)
     else:
         time.sleep(sleep_time)
     if redirect is not None:

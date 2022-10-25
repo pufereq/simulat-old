@@ -9,7 +9,7 @@ from rich import print
 
 from data.clear import clear
 from data.res.random_data import get_work_data, random_rob
-from data.utils import change_value, print_header, print_state
+from data.utils import change_value, error_handler, print_header, print_state
 
 
 class Work():
@@ -20,6 +20,7 @@ class Work():
         # self.workplace = None
         pass
 
+    @error_handler
     def menu(self):
         """Work menu, can pick different jobs."""
         from data.game import panel
@@ -38,6 +39,7 @@ class Work():
         else:
             self.work(prompt)
 
+    @error_handler
     def work(self, workplace):
         """Use rich's track to 'visualize' work progress.
 
@@ -62,6 +64,7 @@ class Work():
         main_character.money = changed['new']
         self.menu()
 
+    @error_handler
     def rob(self):
         """Use rich's track to 'visualize' robbing progess."""
         from data.game import main_character
