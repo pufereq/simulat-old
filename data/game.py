@@ -124,21 +124,27 @@ def grocery_store():
 
     quantity = IntPrompt.ask('quantity')
     if prompt == 'bread':
+        main_character.money -= 3 * quantity
         home_fridge.add_to_fridge('bread', quantity)
 
     elif prompt == 'vegetables':
+        main_character.money -= 2 * quantity
         home_fridge.add_to_fridge('vegetables', quantity)
 
     elif prompt == 'fruits':
+        main_character.money -= 2 * quantity
         home_fridge.add_to_fridge('fruits', quantity)
 
     elif prompt == 'eggs':
+        main_character.money -= 4 * quantity
         home_fridge.add_to_fridge('eggs', quantity)
 
     elif prompt == 'flour':
+        main_character.money -= 1 * quantity
         home_fridge.add_to_fridge('flour', quantity)
 
     elif prompt == 'meat':
+        main_character.money -= 6 * quantity
         home_fridge.add_to_fridge('meat', quantity)
     grocery_store()
 
