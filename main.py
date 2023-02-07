@@ -3,43 +3,48 @@
 """simulat start."""
 
 # imports
-import os
-import time
+import curses as cs
 
-# check if rich is installed and install if not
-try:
-    from rich import print
-except ImportError:
-    print("Rich is not installed.\nInstalling Rich")
-    time.sleep(1)
-    os.system("pip install rich")
-    print("\n\nRich is now installed. Extiting...")
-    exit()
+from src.game.init import init_curses, init_game_win, init_topbar, init_color
 
 # game libs imports
-from data.menu import main_menu
-from data.clear import clear
+from src.menu import main_menu
+from src.clear import clear
 
 
-def start_game():
+def init():
+    stdscr = init_curses()
+    init_color()
+    init_game_win()
+    from src.game.init import game_win
+    init_topbar(stdscr)
+    # init_notification(game_win)
+
+    cs.wrapper(start_game, game_win)
+
+
+def exit_game(code=0):
+    cs.echo()
+    cs.nocbreak()
+    cs.endwin()
+    exit(code)
+
+
+def start_game(stdscr, game_window):
+    from src.game.init import top_bar
     """Start simulat.
 
     Display logo, redirect to menu.
     """
-    clear()
-    print("""
-Welcome to...[b green]
-          _                    _         _
-         (_)                  | |       | |
-     ___  _  _ __ ___   _   _ | |  __ _ | |_
-    / __|| || "_ ` _ \ | | | || | / _` || __|
-    \__ \| || | | | | || |_| || || (_| || |_
-    |___/|_||_| |_| |_| \__,_||_| \__,_| \__|[/b green]
-          [i]by pufereq [[b]Work in Progress[/b]][/i]
-                [i]made with :heart: in :poland:[/i]
-""")
-    main_menu()
+    # stdscr.clear()
+    height, width = stdscr.getmaxyx()
+    top_bar.top_bar.refresh()
+    text = "Welcome to simulat!"
+    game_window.addstr(1, width // 2 - len(text) // 2, text)
+    game_window.refresh()
+    # game_window.getch()
+    main_menu(game_window)
 
 
 if __name__ == "__main__":
-    start_game()
+    init()
