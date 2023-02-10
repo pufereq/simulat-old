@@ -8,7 +8,7 @@ from curses import panel
 class Menu():
     """Menu generation using curses."""
 
-    def __init__(self, title: str, items: list[dict], window: any, position: str = 'center', text_alignment: str = 'center') -> None:
+    def __init__(self, title: str, items: list[dict], window: any, position: str = 'center') -> None:
         """Initialize Menu class.
 
         Args:
@@ -16,7 +16,6 @@ class Menu():
             items (list[dict]): Menu items. See below for examples.
             window (Any): Window to display menu in.
             position (str): Position of the menu. Available values: 'center', 'bottom'. Defaults to 'center'.
-            text_alignment (str): Alignment of text on menu buttons. Available values 'center', 'left'. Defaults to 'center'.
 
         Examples:
             items=[
@@ -37,7 +36,6 @@ class Menu():
         # init panels
         self.vertical_length = len(items)
         self.size = window.getmaxyx()
-        self.text_alignment = text_alignment
 
         labels = list((_dict['label'] for _, _dict in enumerate(items)))
         labels.append(title)
@@ -96,25 +94,26 @@ class Menu():
             self.window.refresh()
             cs.doupdate()
             for idx, item in enumerate(self.items):
-                label = item['label']
-                label_highlighted = '> ' + item['label'] + ' <'
+                label_len = len(item['label'])
+
+                left_spacing = 2
+                if label_len % 2 == 0:
+                    right_spacing = 1
+                else:
+                    right_spacing = 2
+
+                label = ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - left_spacing) + item['label'] + ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - right_spacing)
+
+                label_highlighted = ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - left_spacing) + item['label'] + ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - right_spacing)
 
                 if idx == self.pos:
                     mode = cs.A_REVERSE
                     label = label_highlighted
                 else:
-                    label = '  ' + label + '  '
+                    label = '' + label + ''
                     mode = cs.A_NORMAL
 
-                label_len = len(label)
-                left_spacing = 1
-                if label_len % 2 == 0:
-                    right_spacing = 0
-                else:
-                    right_spacing = 1
-                if self.text_alignment == 'center':
-                    label = ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - left_spacing) + label + ' ' * ((self.window.getmaxyx()[1] - label_len) // 2 - right_spacing)
-                self.window.addstr(1 + idx, 1, label, mode)
+                self.window.addstr(1 + idx, 2, label, mode)
 
             key = self.window.getch()
 
